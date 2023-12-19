@@ -22,6 +22,9 @@
             android:name=".screens.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".screens.PostRoomActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

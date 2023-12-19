@@ -9,52 +9,17 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="117dp"
-                    android:layout_height="76dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="32dp"
-                    android:src="@drawable/baseline_person_2_24"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:text="Wellcome "
-                    android:textColor="#000000"
-                    android:textSize="17sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toTopOf="@+id/imageView" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gia Huy"
-                    android:textColor="#000000"
-                    android:textSize="27sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <EditText
                 android:id="@+id/editTextText3"
@@ -278,7 +243,7 @@
                 android:paddingEnd="32dp">
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/btnPost"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -292,124 +257,95 @@
     </ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout2"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-            <com.google.android.material.bottomappbar.BottomAppBar
 
+        <com.google.android.material.bottomappbar.BottomAppBar
+
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            app:fabCradleMargin="8dp"
+
+            app:fabCradleRoundedCornerRadius="50dp"
+            app:fabCradleVerticalOffset="6dp"
+
+
+            >
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:id="@+id/app_bar"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom"
-                android:background="@color/white"
-                app:fabCradleMargin="8dp"
-                android:backgroundTint="@color/white"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                app:fabCradleRoundedCornerRadius="50dp"
-                app:fabCradleVerticalOffset="6dp"
-
-
-                >
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    >
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView11"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:src="@tools:sample/avatars"
-                            tools:srcCompat="@drawable/bottom_btn1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView12"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:src="@tools:sample/avatars"
-                            tools:srcCompat="@drawable/bottom_btn2" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical"
-                        android:visibility="invisible">
-
-                        <ImageView
-                            android:id="@+id/imageView13"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:src="@tools:sample/avatars"
-                            tools:srcCompat="@drawable/bottom_btn1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView14"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:src="@tools:sample/avatars"
-                            tools:srcCompat="@drawable/bottom_btn3" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView15"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:src="@tools:sample/avatars"
-                            tools:srcCompat="@drawable/bottom_btn4" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/bottom_btn1" />
                 </LinearLayout>
-            </com.google.android.material.bottomappbar.BottomAppBar>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/app_bar"
-        android:src="@drawable/float_icon"
-        android:tint="@color/white"
-        app:maxImageSize="30dp"
-        android:backgroundTint="@color/dark_orange"/>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/bottom_btn2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView14"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/bottom_btn3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView15"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/bottom_btn4" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

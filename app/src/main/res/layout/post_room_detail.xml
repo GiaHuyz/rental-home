@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.HomeActivity"
-   >
+    tools:context=".screens.HomeActivity">
 
 
     <LinearLayout
@@ -17,33 +16,33 @@
             android:id="@+id/tvinforroom"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Post room details"
             android:background="@drawable/background_edittext"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:textSize="25dp"/>
+            android:text="Post room details"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="18dp"
-                android:layout_marginEnd="18dp">
+                android:layout_marginEnd="18dp"
+                android:orientation="vertical">
 
                 <Button
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="16dp"
                     android:id="@+id/btnUploadImg"
-                    android:background="@drawable/background_login_btn"
                     android:layout_width="match_parent"
-                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
-                    android:text="Upload Flat Image" />
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@drawable/background_login_btn"
+                    android:text="Upload Flat Image"
+                    android:textColor="@color/white" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -56,9 +55,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/btnUploadImg"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="16dp" />
-                    
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal" />
+
                 </HorizontalScrollView>
 
 
@@ -66,15 +65,15 @@
                     android:id="@+id/tvtienich"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Amenities of the room"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@color/purple_200"
-                    android:textSize="25dp"
+                    android:text="Amenities of the room"
+                    android:textColor="@color/black"
 
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,11 +88,11 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdbed"
+                            android:id="@+id/cbBed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
@@ -107,6 +106,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <View
                         android:id="@+id/vstienich1"
                         android:layout_width="1dp"
@@ -114,13 +114,14 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:background="@color/black" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdinternet"
+                            android:id="@+id/cbInternet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -139,6 +140,7 @@
                     <!-- ... -->
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -152,11 +154,11 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdTulanh"
+                            android:id="@+id/cbFridge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -169,6 +171,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <View
                         android:id="@+id/vstienich2"
                         android:layout_width="1dp"
@@ -176,13 +179,14 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:background="@color/black" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdwsms"
+                            android:id="@+id/cbWM"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -197,6 +201,9 @@
 
 
                 </LinearLayout>
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -210,73 +217,11 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdparking"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Parking"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.423" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    <View
-                        android:id="@+id/vstienich3"
-                        android:layout_width="1dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/black" />
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
-
-                        <CheckBox
-                            android:id="@+id/rdQuat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Fan"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.114"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.444" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!-- Tương tự cho các phần còn lại, thay TextView bằng RadioButton -->
-                    <!-- ... -->
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-
-                    android:background="@drawable/detail_top_background_with_border"
-                    android:elevation="3dp"
-                    android:orientation="horizontal"
-                    android:padding="1dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
-
-                        <CheckBox
-                            android:id="@+id/rdmaylanh"
+                            android:id="@+id/cbAir"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -290,6 +235,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <View
                         android:id="@+id/vstienich4"
                         android:layout_width="1dp"
@@ -297,13 +243,14 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:background="@color/black" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdibathroom"
+                            android:id="@+id/cbBath"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -323,6 +270,7 @@
                     <!-- ... -->
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -336,11 +284,11 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdcook"
+                            android:id="@+id/cbCook"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="cooking stove"
@@ -352,6 +300,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.615" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <View
                         android:id="@+id/vstienich5"
                         android:layout_width="1dp"
@@ -359,13 +308,14 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:background="@color/black" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <CheckBox
-                            android:id="@+id/rdsercurity"
+                            android:id="@+id/cbSecurity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Sercurity"
@@ -383,19 +333,67 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+
+                    android:background="@drawable/detail_top_background_with_border"
+                    android:elevation="3dp"
+                    android:orientation="horizontal"
+                    android:padding="1dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
+
+                        <CheckBox
+                            android:id="@+id/cbParking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Parking"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.3"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.423" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/vstienich3"
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/black" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333"/>
+
+                    <!-- Tương tự cho các phần còn lại, thay TextView bằng RadioButton -->
+                    <!-- ... -->
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tvsDiachi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Address of room for rent"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@color/purple_200"
-                    android:textSize="25dp"
+                    android:text="Address of room for rent"
+                    android:textColor="@color/black"
 
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -411,8 +409,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <EditText
                             android:id="@+id/edtAddress"
@@ -432,15 +430,15 @@
                     android:id="@+id/fee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Monthly rental fee"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@color/purple_200"
-                    android:textSize="25dp"
+                    android:text="Monthly rental fee"
+                    android:textColor="@color/black"
 
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -456,8 +454,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0.3333"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
 
                         <EditText
                             android:id="@+id/edtFee"
@@ -473,16 +471,113 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnSubmit"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/rounded_3button"
-                    android:textColor="@color/white"
+                <TextView
+                    android:id="@+id/surround"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Submit" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/purple_200"
+                    android:text="Surrounding amenitiesh"
+                    android:textColor="@color/black"
+
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+
+                    android:background="@drawable/detail_top_background_with_border"
+                    android:elevation="3dp"
+                    android:orientation="horizontal"
+                    android:padding="1dp">
+
+                    <CheckBox
+                        android:id="@+id/cbHospital"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Hospital"
+                        android:textSize="20dp"
+                        android:layout_weight="1"/>
+
+                    <CheckBox
+                        android:id="@+id/cbSchool"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="School"
+                        android:textSize="20dp"
+                        android:layout_weight="1"/>
+
+                    <CheckBox
+                        android:id="@+id/cbSuperMarket"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Supermarket"
+                        android:textSize="20dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/rules"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/purple_200"
+                    android:text="Rules"
+                    android:textColor="@color/black"
+
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+
+                    android:background="@drawable/detail_top_background_with_border"
+                    android:elevation="3dp"
+                    android:orientation="horizontal"
+                    android:padding="1dp">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
+
+                        <EditText
+                            android:id="@+id/edtRules"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ems="10"
+                            android:inputType="textMultiLine"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_3button"
+                    android:text="Submit"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
+
 
         </ScrollView>
     </LinearLayout>

@@ -11,6 +11,7 @@ import com.example.rentalhome.contract.LoginContract;
 import com.example.rentalhome.databinding.ActivityLoginBinding;
 import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.LoginPresenter;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
     private ActivityLoginBinding binding;
@@ -22,24 +23,34 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        checkCurrentUser();
+    }
+
+    private void checkCurrentUser() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            navigateToHome();
+        } else {
+            setupLogin();
+        }
+    }
+
+    private void setupLogin() {
         presenter = new LoginPresenter(this);
 
-        // Chuyển màn hình đăng nhập
-        binding.btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
+        binding.btnSignup.setOnClickListener(view -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
         });
 
-        // Login
-        binding.btnSignin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.onLoginClick(binding.edtEmail.getText().toString(), binding.edtPass.getText().toString());
-            }
-        });
+        binding.btnSignin.setOnClickListener(view ->
+                presenter.onLoginClick(binding.edtEmail.getText().toString(), binding.edtPass.getText().toString())
+        );
+    }
+
+    private void navigateToHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

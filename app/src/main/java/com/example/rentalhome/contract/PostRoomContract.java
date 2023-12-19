@@ -1,7 +1,10 @@
 package com.example.rentalhome.contract;
 
+import android.net.Uri;
+
 import com.example.rentalhome.dto.Rooms;
-import com.example.rentalhome.dto.User;
+
+import java.util.ArrayList;
 
 public interface PostRoomContract {
     interface View {
@@ -10,11 +13,11 @@ public interface PostRoomContract {
     }
 
     interface Presenter {
-        void onLoginClick(Rooms room);
+        void onLoginClick(Rooms room, ArrayList<Uri> uris);
     }
 
     interface Model {
-        void postRoom(Rooms room, OnLoginListener listener);
+        void postRoom(Rooms room, ArrayList<Uri> uris, OnLoginListener listener);
 
         interface OnLoginListener {
             void onSuccess(String message);

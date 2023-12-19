@@ -1,10 +1,14 @@
 package com.example.rentalhome.presenter;
 
+import android.net.Uri;
+
 import com.example.rentalhome.contract.PostRoomContract;
 import com.example.rentalhome.contract.SignupContract;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.model.PostRoomModel;
 import com.example.rentalhome.model.SignupModel;
+
+import java.util.ArrayList;
 
 public class PostRoomPresenter implements PostRoomContract.Presenter {
     private PostRoomContract.View view;
@@ -14,9 +18,10 @@ public class PostRoomPresenter implements PostRoomContract.Presenter {
         this.view = view;
         this.model = new PostRoomModel();
     }
+
     @Override
-    public void onLoginClick(Rooms room) {
-        model.postRoom(room, new PostRoomContract.Model.OnLoginListener() {
+    public void onLoginClick(Rooms room, ArrayList<Uri> uris) {
+        model.postRoom(room, uris, new PostRoomContract.Model.OnLoginListener() {
             @Override
             public void onSuccess(String message) {
                 view.showSuccessMessage(message);

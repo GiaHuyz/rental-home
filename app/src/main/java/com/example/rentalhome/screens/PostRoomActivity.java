@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rentalhome.contract.PostRoomContract;
 import com.example.rentalhome.databinding.PostRoomDetailBinding;
+import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.presenter.PostRoomPresenter;
 
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ import java.util.ArrayList;
 public class PostRoomActivity extends AppCompatActivity implements PostRoomContract.View {
     private PostRoomDetailBinding binding;
     private PostRoomPresenter presenter;
-
     private static final int PICK_IMAGE_REQUEST = 1;
-    private ArrayList<Uri> imageUris;
+    private ArrayList<Uri> imageUris = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,20 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             }
         });
+
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Rooms rooms = new Rooms(getIntent().getStringExtra("USER_ID"),
+                        Long.parseLong(binding.edtFee.getText().toString()),
+                        binding.edtAddress.getText().toString(), getAmenities(),
+                        "available", getSurround(), binding.edtRules.getText().toString());
+
+                presenter.onLoginClick(rooms, imageUris);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -53,11 +68,13 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
                 for (int i = 0; i < count; i++) {
                     Uri imageUri = data.getClipData().getItemAt(i).getUri();
                     addImageToLinearLayout(imageUri);
+                    imageUris.add(imageUri);
                 }
             } else if (data.getData() != null) {
                 // Nếu người dùng chỉ chọn một ảnh
                 Uri imageUri = data.getData();
                 addImageToLinearLayout(imageUri);
+                imageUris.add(imageUri);
             }
         }
     }
@@ -65,8 +82,59 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
     private void addImageToLinearLayout(Uri imageUri) {
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageURI(imageUri);
         binding.imagesContainer.addView(imageView);
+    }
+
+    private ArrayList<String> getAmenities() {
+        ArrayList<String> selectedItems = new ArrayList<>();
+
+        if (binding.cbAir.isChecked()) {
+            selectedItems.add(binding.cbAir.getText().toString());
+        }
+        if (binding.cbBath.isChecked()) {
+            selectedItems.add(binding.cbBath.getText().toString());
+        }
+        if (binding.cbBed.isChecked()) {
+            selectedItems.add(binding.cbBed.getText().toString());
+        }
+        if (binding.cbCook.isChecked()) {
+            selectedItems.add(binding.cbCook.getText().toString());
+        }
+        if (binding.cbFridge.isChecked()) {
+            selectedItems.add(binding.cbFridge.getText().toString());
+        }
+        if (binding.cbInternet.isChecked()) {
+            selectedItems.add(binding.cbInternet.getText().toString());
+        }
+        if (binding.cbParking.isChecked()) {
+            selectedItems.add(binding.cbParking.getText().toString());
+        }
+        if (binding.cbSecurity.isChecked()) {
+            selectedItems.add(binding.cbSecurity.getText().toString());
+        }
+        if (binding.cbWM.isChecked()) {
+            selectedItems.add(binding.cbWM.getText().toString());
+        }
+
+        return selectedItems;
+    }
+
+    private ArrayList<String> getSurround() {
+        ArrayList<String> selectedItems = new ArrayList<>();
+
+        if (binding.cbHospital.isChecked()) {
+            selectedItems.add(binding.cbHospital.getText().toString());
+        }
+        if (binding.cbSchool.isChecked()) {
+            selectedItems.add(binding.cbSchool.getText().toString());
+        }
+        if (binding.cbSuperMarket.isChecked()) {
+            selectedItems.add(binding.cbSuperMarket.getText().toString());
+        }
+
+        return selectedItems;
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.example.rentalhome.dto.User;
 public interface LoginContract {
     interface View {
         void showErrorMessage(String message);
-        void loginSuccess(User user, String userId);
+        void loginSuccess(User user);
     }
 
     interface Presenter {
@@ -16,7 +16,7 @@ public interface LoginContract {
         void login(String email, String password, OnLoginListener listener);
 
         interface OnLoginListener {
-            void onSuccess(User user, String userId);
+            void onSuccess(User user);
             void onFailure(String message);
         }
     }

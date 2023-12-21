@@ -14,6 +14,7 @@ import com.example.rentalhome.contract.PostRoomContract;
 import com.example.rentalhome.databinding.PostRoomDetailBinding;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.presenter.PostRoomPresenter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,10 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
         binding.btnUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             }
         });
@@ -46,10 +47,11 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
             @Override
             public void onClick(View v) {
 
-                Rooms rooms = new Rooms(getIntent().getStringExtra("USER_ID"),
+                Rooms rooms = new Rooms(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         Long.parseLong(binding.edtFee.getText().toString()),
                         binding.edtAddress.getText().toString(), getAmenities(),
-                        "available", getSurround(), binding.edtRules.getText().toString());
+                        "available", getSurround(), binding.edtRules.getText().toString(),
+                        Integer.parseInt(binding.edtArea.getText().toString()), binding.edtPhone.getText().toString());
 
                 presenter.onLoginClick(rooms, imageUris);
                 finish();
@@ -81,7 +83,9 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
 
     private void addImageToLinearLayout(Uri imageUri) {
         ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300, 300);
+        layoutParams.setMargins(20, 0, 0, 0);
+        imageView.setLayoutParams(layoutParams);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageURI(imageUri);
         binding.imagesContainer.addView(imageView);

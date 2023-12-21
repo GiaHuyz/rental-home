@@ -1,6 +1,7 @@
 package com.example.rentalhome.model;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.rentalhome.contract.PostRoomContract;
 import com.example.rentalhome.dto.Rooms;
@@ -34,7 +35,6 @@ public class PostRoomModel implements PostRoomContract.Model {
         roomMap.put("surround", room.getSurround());
         roomMap.put("status", room.getStatus());
         roomMap.put("currentTenants", room.getCurrentTenants());
-        roomMap.put("reviews", room.getReviews());
         roomMap.put("viewings", room.getViewings());
 
         newRoomRef.set(roomMap).addOnSuccessListener(aVoid -> {
@@ -64,8 +64,10 @@ public class PostRoomModel implements PostRoomContract.Model {
                 }
             }).addOnFailureListener(e -> {
                 listener.onFailure("Error uploading image: " + e.getMessage());
+                Log.d("ERROR_UPLOAD_IMG", e.getMessage());
             })).addOnFailureListener(e -> {
                 listener.onFailure("Error uploading image: " + e.getMessage());
+                Log.d("ERROR_UPLOAD_IMG", e.getMessage());
             });
         }
     }

@@ -18,8 +18,8 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void onLoginClick(String email, String password) {
         model.login(email, password, new LoginContract.Model.OnLoginListener() {
             @Override
-            public void onSuccess(User user, String userId) {
-                view.loginSuccess(user, userId);
+            public void onSuccess(User user) {
+                view.loginSuccess(user);
             }
 
             @Override

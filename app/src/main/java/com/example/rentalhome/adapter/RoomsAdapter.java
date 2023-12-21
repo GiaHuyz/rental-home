@@ -1,5 +1,6 @@
 package com.example.rentalhome.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,19 +8,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.rentalhome.R;
 import com.example.rentalhome.dto.Rooms;
+import com.example.rentalhome.screens.DetailRoomActivity;
 
 import java.util.ArrayList;
 
 public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHolder> {
     private ArrayList<Rooms> roomList;
+    private Context context;
+    private OnItemClickListener itemClickListener;
 
-    public RoomsAdapter(ArrayList<Rooms> roomList) {
+    public RoomsAdapter(Context context, ArrayList<Rooms> roomList, OnItemClickListener itemClickListener) {
+        this.context = context;
         this.roomList = roomList;
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Rooms room);
     }
 
     @NonNull
@@ -34,12 +45,18 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHold
         Rooms room = roomList.get(position);
         holder.tvAddress.setText(room.getAddress());
         holder.tvPrice.setText(String.valueOf(room.getPrice()));
+        holder.tvArea.setText(String.valueOf(room.getArea()));
         String imageUrl = room.getImages().get(0);
         if (imageUrl != null && !imageUrl.isEmpty()) {
-            Glide.with(holder.itemView.getContext())
-                    .load(imageUrl)
-                    .into(holder.imgHome);
+            Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.imgHome);
         }
+
+        holder.recCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemClick(room);
+            }
+        });
     }
 
     @Override
@@ -54,14 +71,17 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHold
     }
 
     static class RoomViewHolder extends RecyclerView.ViewHolder {
-        TextView tvAddress, tvPrice;
+        TextView tvAddress, tvPrice, tvArea;
         ImageView imgHome;
+        CardView recCard;
 
         public RoomViewHolder(@NonNull View itemView) {
             super(itemView);
             tvAddress = itemView.findViewById(R.id.tvAddress);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvArea = itemView.findViewById(R.id.tvArea);
             imgHome = itemView.findViewById(R.id.imgHome);
+            recCard = itemView.findViewById(R.id.recCard);
         }
     }
 }

@@ -27,7 +27,9 @@ public class RoomsModel implements RoomsContract.Model{
 
                         ArrayList<Rooms> rooms = new ArrayList<>();
                         for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
-                            rooms.add(snapshot.toObject(Rooms.class));
+                            Rooms room = snapshot.toObject(Rooms.class);
+                            room.setRoomId(snapshot.getId());
+                            rooms.add(room);
                         }
                         listener.onRoomsLoaded(rooms);
                     }

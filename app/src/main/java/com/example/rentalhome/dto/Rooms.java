@@ -7,18 +7,19 @@ public class Rooms {
     private String ownerId;
     private ArrayList<String> images;
     private long price;
+    private int area;
     private String address;
     private ArrayList<String> amenities;
     private ArrayList<String> surround;
     private String status;
     private ArrayList<String> currentTenants;
-    private ArrayList<String> reviews;
     private ArrayList<String> viewings;
     private String rules;
+    private String phone;
     public Rooms() {
     }
 
-    public Rooms(String ownerId, long price, String address, ArrayList<String> amenities, String status, ArrayList<String> surround, String rules) {
+    public Rooms(String ownerId, long price, String address, ArrayList<String> amenities, String status, ArrayList<String> surround, String rules, int area, String phone) {
         this.ownerId = ownerId;
         this.price = price;
         this.address = address;
@@ -26,6 +27,23 @@ public class Rooms {
         this.status = status;
         this.surround = surround;
         this.rules = rules;
+        this.area = area;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getArea() {
+        return area;
+    }
+
+    public void setArea(int area) {
+        this.area = area;
     }
 
     public String getRules() {
@@ -106,14 +124,6 @@ public class Rooms {
 
     public void setSurround(ArrayList<String> surround) {
         this.surround = surround;
-    }
-
-    public ArrayList<String> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(ArrayList<String> reviews) {
-        this.reviews = reviews;
     }
 
     public ArrayList<String> getViewings() {

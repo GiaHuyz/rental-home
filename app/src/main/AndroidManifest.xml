@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +17,7 @@
         android:theme="@style/Theme.RentalHome"
         tools:targetApi="31">
         <activity
-            android:name=".screens.HomeActivity"
+            android:name=".screens.NavActivity"
             android:exported="false" />
         <activity
             android:name=".screens.SignUpActivity"
@@ -26,6 +30,9 @@
             android:exported="false" />
         <activity
             android:name=".screens.ListRoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.DetailRoomActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

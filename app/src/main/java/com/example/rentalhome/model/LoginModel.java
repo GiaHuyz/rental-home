@@ -26,7 +26,7 @@ public class LoginModel implements LoginContract.Model {
                                 .addOnSuccessListener(documentSnapshot -> {
                                     if (documentSnapshot.exists()) {
                                         User user = documentSnapshot.toObject(User.class);
-                                        listener.onSuccess(user, userId);
+                                        listener.onSuccess(user);
                                     } else {
                                         listener.onFailure("User not found in Firestore");
                                     }

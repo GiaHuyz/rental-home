@@ -7,12 +7,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.rentalhome.databinding.FragmentHomeBinding;
 import com.example.rentalhome.dto.User;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -41,10 +45,53 @@ public class HomeFragment extends Fragment {
         binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ListRoomActivity.class);
-                intent.putExtra("USER", user);
-                startActivity(intent);
+                if(!TextUtils.isEmpty(binding.edtAddressSearch.getText())) {
+                    Intent intent = new Intent(getActivity(), ListRoomActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("USER", user);
+                    bundle.putString("ADDRESS", binding.edtAddressSearch.getText().toString());
+                    bundle.putString("PRICE", binding.edtPriceSearch.getText().toString());
+                    bundle.putStringArrayList("AMENITIES", getAmenities());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "Address is required", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private ArrayList<String> getAmenities() {
+        ArrayList<String> selectedItems = new ArrayList<>();
+
+        if (binding.cbAir.isChecked()) {
+            selectedItems.add(binding.cbAir.getText().toString());
+        }
+        if (binding.cbBath.isChecked()) {
+            selectedItems.add(binding.cbBath.getText().toString());
+        }
+        if (binding.cbBed.isChecked()) {
+            selectedItems.add(binding.cbBed.getText().toString());
+        }
+        if (binding.cbCook.isChecked()) {
+            selectedItems.add(binding.cbCook.getText().toString());
+        }
+        if (binding.cbFridge.isChecked()) {
+            selectedItems.add(binding.cbFridge.getText().toString());
+        }
+        if (binding.cbInternet.isChecked()) {
+            selectedItems.add(binding.cbInternet.getText().toString());
+        }
+        if (binding.cbParking.isChecked()) {
+            selectedItems.add(binding.cbParking.getText().toString());
+        }
+        if (binding.cbSecurity.isChecked()) {
+            selectedItems.add(binding.cbSecurity.getText().toString());
+        }
+        if (binding.cbWM.isChecked()) {
+            selectedItems.add(binding.cbWM.getText().toString());
+        }
+
+        return selectedItems;
     }
 }

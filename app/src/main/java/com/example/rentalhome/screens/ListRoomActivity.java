@@ -2,6 +2,8 @@ package com.example.rentalhome.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +17,15 @@ import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.RoomsPresenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListRoomActivity extends AppCompatActivity implements RoomsContract.View {
     private ListRoomSearchBinding binding;
     private RoomsAdapter adapter;
     private RoomsPresenter presenter;
+    private String address;
+    private Integer price;
+    private List<String> amenities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +37,20 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
 
         User user = (User) getIntent().getSerializableExtra("USER");
 
-        adapter = new RoomsAdapter(this, new ArrayList<>(), new RoomsAdapter.OnItemClickListener() {
+        Bundle b = getIntent().getExtras();
+        address = b.getString("ADDRESS");
+
+        if(TextUtils.isEmpty(getIntent().getStringExtra("PRICE"))) {
+            price = null;
+        } else {
+            price = Integer.parseInt(b.getString("PRICE"));
+        }
+
+        amenities = b.getStringArrayList("AMENITIES");
+
+        Log.d("DDDDDDDDDDDD", address);
+
+        adapter = new RoomsAdapter(new ArrayList<>(), new RoomsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Rooms room) {
                 Intent intent = new Intent(ListRoomActivity.this, DetailRoomActivity.class);
@@ -54,7 +73,7 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
         binding.rvHomes.setAdapter(adapter);
 
         presenter = new RoomsPresenter(this);
-        presenter.loadRooms();
+        presenter.loadRooms(address, price, amenities);
     }
 
     @Override

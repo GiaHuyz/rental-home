@@ -25,7 +25,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/editTextText3"
+                    android:id="@+id/edtAddressSearch"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="32dp"
@@ -38,7 +38,7 @@
                     android:inputType="text" />
 
                 <EditText
-                    android:id="@+id/editTextText4"
+                    android:id="@+id/edtPriceSearch"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="32dp"
@@ -48,7 +48,7 @@
                     android:drawableStart="@drawable/search_icon"
                     android:ems="10"
                     android:hint="Giá bạn muốn thuê"
-                    android:inputType="text" />
+                    android:inputType="number" />
 
                 <TextView
 
@@ -79,18 +79,18 @@
                         android:paddingEnd="32dp"
                         android:weightSum="3">
 
-                        <RadioButton
-                            android:id="@+id/radioButton1"
+                        <CheckBox
+                            android:id="@+id/cbBed"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:layout_weight="1"
 
                             android:background="@drawable/border"
-                            android:text="Giường" />
+                            android:text="Bed" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton2"
+                        <CheckBox
+                            android:id="@+id/cbInternet"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
@@ -99,14 +99,14 @@
                             android:background="@drawable/border"
                             android:text="Internet" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton3"
+                        <CheckBox
+                            android:id="@+id/cbFridge"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/border"
-                            android:text="Tủ lạnh" />
+                            android:text="Fridge" />
                     </LinearLayout>
 
                 </RadioGroup>
@@ -125,33 +125,34 @@
                         android:paddingEnd="32dp"
                         android:weightSum="3">
 
-                        <RadioButton
-                            android:id="@+id/radioButton4"
+                        <CheckBox
+                            android:id="@+id/cbWM"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginEnd="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/border"
-                            android:text="Máy giặt" />
+                            android:text="Washing Machine" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton5"
+                        <CheckBox
+                            android:id="@+id/cbParking"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/border"
-                            android:text="Chỗ giữ xe" />
+                            android:text="Parking" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton6"
+                        <CheckBox
+                            android:id="@+id/cbBath"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/border"
-                            android:text="Quạt " />
+                            android:text="Bath" />
                     </LinearLayout>
 
                 </RadioGroup>
@@ -170,35 +171,39 @@
                         android:orientation="horizontal"
                         android:paddingStart="32dp"
                         android:paddingEnd="32dp"
-                        android:weightSum="3">
+                        android:weightSum="5">
 
-                        <RadioButton
-                            android:id="@+id/radioButton7"
+                        <CheckBox
+                            android:id="@+id/cbCook"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
+                            android:layout_weight="1.5"
                             android:background="@drawable/border"
-                            android:text="Máy lạnh " />
+                            android:text="Cook" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton8"
+                        <CheckBox
+                            android:id="@+id/cbSecurity"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
-                            android:layout_weight="1"
+                            android:layout_weight="1.5"
                             android:background="@drawable/border"
-                            android:text="Phòng tắm" />
+                            android:text="Security" />
 
-                        <RadioButton
-                            android:id="@+id/radioButton9"
+                        <CheckBox
+                            android:id="@+id/cbAir"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginStart="5dp"
-                            android:layout_weight="1"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="2"
                             android:background="@drawable/border"
-                            android:text="Bếp nấu ăn " />
+                            android:text="Air conditioning" />
+
+
+
                     </LinearLayout>
                 </RadioGroup>
 
@@ -207,22 +212,22 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:paddingStart="32dp"
-                    android:paddingEnd="32dp">
+                    android:paddingEnd="32dp"
+                    android:layout_marginTop="5dp">
 
                     <Button
-
                         android:id="@+id/btnSearch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:text="Tìm kiếm " />
+
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Bạn có nhà muốn cho thuê  ? "
                     android:textSize="25dp"
@@ -233,7 +238,7 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/cat_4" />

@@ -110,6 +110,10 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         binding.btnPostCm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(binding.edtComment.getText())) {
+                    return;
+                }
+
                 Comment comment = new Comment();
                 comment.setComment(binding.edtComment.getText().toString());
                 comment.setRoomId(roomId);
@@ -117,6 +121,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                 comment.setName(user.getName());
 
                 commentPresenter.onPostComment(comment);
+                binding.edtComment.setText("");
             }
         });
 

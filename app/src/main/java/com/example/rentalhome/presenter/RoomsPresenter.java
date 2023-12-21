@@ -5,6 +5,9 @@ import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.model.RoomsModel;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class RoomsPresenter implements RoomsContract.Presenter {
     private RoomsContract.View view;
@@ -16,8 +19,8 @@ public class RoomsPresenter implements RoomsContract.Presenter {
     }
 
     @Override
-    public void loadRooms() {
-        model.getRooms(new RoomsContract.Model.OnRoomsLoadListener() {
+    public void loadRooms(String address, @Nullable Integer price, @Nullable List<String> amenities) {
+        model.getRooms(address, price, amenities, new RoomsContract.Model.OnRoomsLoadListener() {
             @Override
             public void onRoomsLoaded(ArrayList<Rooms> roomList) {
                 view.onRoomsLoaded(roomList);

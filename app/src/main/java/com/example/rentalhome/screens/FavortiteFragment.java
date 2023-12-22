@@ -2,56 +2,50 @@ package com.example.rentalhome.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.rentalhome.adapter.RoomsAdapter;
 import com.example.rentalhome.contract.RoomsContract;
-import com.example.rentalhome.databinding.ListRoomSearchBinding;
+import com.example.rentalhome.databinding.FragmentFavortiteBinding;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.RoomsPresenter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ListRoomActivity extends AppCompatActivity implements RoomsContract.View {
-    private ListRoomSearchBinding binding;
+public class FavortiteFragment extends Fragment implements RoomsContract.View {
+    private FragmentFavortiteBinding binding;
     private RoomsAdapter adapter;
-    private RoomsPresenter presenter;
-    private String address;
-    private Integer price;
-    private List<String> amenities;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ListRoomSearchBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentFavortiteBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
+    }
 
-        binding.rvHomes.setLayoutManager(new LinearLayoutManager(this));
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        User user = (User) getIntent().getSerializableExtra("USER");
+        binding.rvFavorite.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        Bundle b = getIntent().getExtras();
-        address = b.getString("ADDRESS");
-
-        if(TextUtils.isEmpty(getIntent().getStringExtra("PRICE"))) {
-            price = null;
-        } else {
-            price = Integer.parseInt(b.getString("PRICE"));
-        }
-
-        amenities = b.getStringArrayList("AMENITIES");
+        User user = (User) getArguments().getSerializable("USER");
 
         adapter = new RoomsAdapter(new ArrayList<>(), new RoomsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Rooms room) {
-                Intent intent = new Intent(ListRoomActivity.this, DetailRoomActivity.class);
+                Intent intent = new Intent(getActivity(), DetailRoomActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("Id", room.getRoomId());
                 bundle.putString("Rules",room.getRules());
@@ -62,15 +56,16 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
                 bundle.putInt("Area", room.getArea());
                 bundle.putStringArrayList("Surround", room.getSurround());
                 bundle.putString("ownerId", room.getOwnerId());
+                bundle.putBoolean("Favorite", true);
                 bundle.putSerializable("User", user);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
-        binding.rvHomes.setAdapter(adapter);
+        binding.rvFavorite.setAdapter(adapter);
 
-        presenter = new RoomsPresenter(this);
-        presenter.loadRooms(address, price, amenities);
+        RoomsPresenter presenter = new RoomsPresenter(this);
+        presenter.loadFavorite(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     @Override
@@ -80,6 +75,7 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
 
     @Override
     public void onRoomsLoadFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 }

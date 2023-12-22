@@ -1,6 +1,5 @@
 package com.example.rentalhome.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import com.example.rentalhome.R;
 import com.example.rentalhome.dto.Comment;
 
 import java.util.List;
-import java.util.Objects;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentViewHolder> {
     private List<Comment> commentList;
@@ -22,7 +20,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     public CommentsAdapter(List<Comment> commentList, String ownerId) {
         this.commentList = commentList;
         this.ownerId = ownerId;
-        Log.d("OwnerId", ownerId);
     }
 
     @NonNull

@@ -20,10 +20,12 @@ import android.widget.Toast;
 import com.example.rentalhome.adapter.CommentsAdapter;
 import com.example.rentalhome.adapter.ImagesAdapter;
 import com.example.rentalhome.contract.CommentContract;
+import com.example.rentalhome.contract.UserContract;
 import com.example.rentalhome.databinding.DetailRoomBinding;
 import com.example.rentalhome.dto.Comment;
 import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.CommentPresenter;
+import com.example.rentalhome.presenter.UserPresenter;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DateFormat;
@@ -33,15 +35,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View {
+public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View, UserContract.View {
     private DetailRoomBinding binding;
-    private String roomId, rules, address, phone, ownerId, userId;
-    private ArrayList<String> images, amenities, surround;
-    private int area;
-    private long price;
+    private String roomId;
+    private String userId;
     private User user;
 
     private CommentPresenter commentPresenter;
+    private UserPresenter userPresenter;
     private CommentsAdapter commentsAdapter;
 
     @Override
@@ -50,30 +51,33 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         binding = DetailRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Bundle bundle = getIntent().getExtras();
+        userPresenter = new UserPresenter(this);
 
+        Bundle bundle = getIntent().getExtras();
         if(bundle == null) {
             return;
         }
 
         roomId = bundle.getString("Id");
-        rules = bundle.getString("Rules");
-        images = bundle.getStringArrayList("Images");
-        price = bundle.getLong("Price");
-        address = bundle.getString("Address");
-        amenities = bundle.getStringArrayList("Amenities");
-        area = bundle.getInt("Area");
-        surround = bundle.getStringArrayList("Surround");
-        phone = bundle.getString("Phone");
-        ownerId = bundle.getString("ownerId");
+        String rules = bundle.getString("Rules");
+        ArrayList<String> images = bundle.getStringArrayList("Images");
+        long price = bundle.getLong("Price");
+        String address = bundle.getString("Address");
+        ArrayList<String> amenities = bundle.getStringArrayList("Amenities");
+        int area = bundle.getInt("Area");
+        ArrayList<String> surround = bundle.getStringArrayList("Surround");
+        String ownerId = bundle.getString("ownerId");
 
         user = (User) bundle.getSerializable("User");
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        userPresenter.isFavorite(userId, roomId);
 
         ImagesAdapter adapter = new ImagesAdapter(images);
         binding.viewPagerImages.setAdapter(adapter);
 
         binding.tvAmenities.setText(TextUtils.join(", ", amenities));
+        binding.tvRules.setText(rules);
         binding.tvPrice.setText(String.valueOf(price));
         binding.tvAddres.setText(address);
         binding.tvArea.setText(String.valueOf(area));
@@ -125,6 +129,13 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             }
         });
 
+        binding.btnFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userPresenter.onFavoriteClick(userId, roomId);
+            }
+        });
+
         binding.rvComment.setLayoutManager(new LinearLayoutManager(this));
         commentsAdapter = new CommentsAdapter(new ArrayList<>(), ownerId);
         binding.rvComment.setAdapter(commentsAdapter);
@@ -136,7 +147,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     private void makePhoneCall() {
         try {
             Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:" + phone));
+            callIntent.setData(Uri.parse("tel:" + user.getPhone()));
             startActivity(callIntent);
         } catch (SecurityException e) {
             Log.d("ERROR_CALL", e.getMessage());
@@ -151,5 +162,20 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     @Override
     public void display(List<Comment> commentList) {
         commentsAdapter.updateCommentList(commentList);
+    }
+
+    @Override
+    public void addFavorite() {
+        binding.btnFav.setText("UNFAVORITE");
+    }
+
+    @Override
+    public void unFavorite() {
+        binding.btnFav.setText("FAVORITE");
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

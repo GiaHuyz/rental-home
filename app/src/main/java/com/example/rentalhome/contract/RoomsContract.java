@@ -15,10 +15,12 @@ public interface RoomsContract {
 
     interface Presenter {
         void loadRooms(String address, @Nullable Integer price, @Nullable List<String> amenities);
+        void loadFavorite(String userId);
     }
 
     interface Model {
         void getRooms(String address, @Nullable Integer price, @Nullable List<String> amenities, OnRoomsLoadListener listener);
+        void getFavorite(String userId, OnRoomsLoadListener listener);
 
         interface OnRoomsLoadListener {
             void onRoomsLoaded(ArrayList<Rooms> roomList);

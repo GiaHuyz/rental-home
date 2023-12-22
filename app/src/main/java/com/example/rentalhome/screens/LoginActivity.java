@@ -47,5 +47,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         bundle.putSerializable("USER", user);
         intent.putExtras(bundle);
         startActivity(intent);
+        finish();
     }
 }

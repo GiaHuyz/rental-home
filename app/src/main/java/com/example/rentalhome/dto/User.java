@@ -1,11 +1,13 @@
 package com.example.rentalhome.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private String name;
     private String email;
     private String phone;
+    private List<String> favorites;
 
     public User() {
     }
@@ -38,5 +40,13 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<String> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<String> favorites) {
+        this.favorites = favorites;
     }
 }

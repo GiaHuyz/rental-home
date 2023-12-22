@@ -32,4 +32,19 @@ public class RoomsPresenter implements RoomsContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void loadFavorite(String userId) {
+        model.getFavorite(userId, new RoomsContract.Model.OnRoomsLoadListener() {
+            @Override
+            public void onRoomsLoaded(ArrayList<Rooms> roomList) {
+                view.onRoomsLoaded(roomList);
+            }
+
+            @Override
+            public void onRoomsLoadFailure(String message) {
+                view.onRoomsLoadFailure(message);
+            }
+        });
+    }
 }

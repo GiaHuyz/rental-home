@@ -15,7 +15,6 @@ public class Rooms {
     private ArrayList<String> currentTenants;
     private ArrayList<String> viewings;
     private String rules;
-    private String phone;
     public Rooms() {
     }
 
@@ -28,14 +27,6 @@ public class Rooms {
         this.surround = surround;
         this.rules = rules;
         this.area = area;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public int getArea() {

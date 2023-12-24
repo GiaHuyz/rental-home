@@ -32,7 +32,10 @@ public class RoomsModel implements RoomsContract.Model{
 
     @Override
     public void getRooms(String city, String district, @Nullable Integer price, @Nullable List<String> amenities, OnRoomsLoadListener listener) {
-        Query query = db.collection("rooms").whereEqualTo("city", city).whereEqualTo("district", district);
+        Query query = db.collection("rooms")
+                .whereEqualTo("city", city)
+                .whereEqualTo("district", district)
+                .whereEqualTo("status", "available");
 
         if (price != null) {
             query = query.whereLessThanOrEqualTo("price", price);

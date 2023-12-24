@@ -281,8 +281,9 @@
                     android:id="@+id/btnSchedule"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/rounded_3button"
                     android:text="Xem lịch hẹn"
                     android:textColor="@color/white"
@@ -300,14 +301,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/rounded_3button"
                     android:text="Đặt cọc"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btnCheckout"
                     app:layout_constraintStart_toEndOf="@id/btnSchedule"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btnCheckout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_3button"
+                    android:text="Thanh toán"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/button8"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

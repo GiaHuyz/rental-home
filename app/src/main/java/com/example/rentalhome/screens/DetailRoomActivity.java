@@ -32,6 +32,7 @@ import com.example.rentalhome.presenter.CommentPresenter;
 import com.example.rentalhome.presenter.RoomsPresenter;
 import com.example.rentalhome.presenter.UserPresenter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -46,8 +47,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     private DetailRoomBinding binding;
     private String roomId;
     private String userId;
-    private User user;
-
+    private User user, owner;
     private CommentPresenter commentPresenter;
     private UserPresenter userPresenter;
     private CommentsAdapter commentsAdapter;
@@ -186,6 +186,34 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                         })
                         .setNegativeButton("No", null)
                         .show();
+            }
+        });
+
+        binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                db.collection("users").document(userId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                User owner = documentSnapshot.toObject(User.class);
+                                Bundle b = new Bundle();
+                                b.putString("nameA", owner.getName());
+                                b.putString("phoneA", owner.getPhone());
+                                b.putString("emailA", owner.getEmail());
+                                b.putString("address", address);
+                                b.putString("fee", String.valueOf(price));
+                                b.putString("nameB", user.getName());
+                                b.putString("phoneB", user.getPhone());
+                                b.putString("emailB", user.getEmail());
+                                intent.putExtras(b);
+                                startActivity(intent);
+                            }
+                        });
+
             }
         });
 

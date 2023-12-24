@@ -6,51 +6,94 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Chọn Ngày Trong Tuần -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chọn Ngày"
-        android:textSize="18sp" />
-
-    <!-- CheckBox cho mỗi ngày trong tuần -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:id="@+id/addLayout">
 
-        <CheckBox android:id="@+id/checkbox_mon"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thứ 2" />
+            android:orientation="horizontal">
 
-        <!-- Thêm CheckBox tương tự cho các ngày khác -->
-        <!-- ... -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thứ"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"/>
+
+            <Spinner
+                android:id="@+id/spinnerDayOfWeek"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Từ: "
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tvTimeFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Tới: "
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tvTimeTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"/>
+
+        </LinearLayout>
+
+        <!-- Nút Đặt Lịch Hẹn -->
+        <Button
+            android:id="@+id/btnScheduleAppointment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thêm Lịch Hẹn" />
     </LinearLayout>
 
-    <!-- Khoảng Thời Gian -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Khoảng Thời Gian (2 giờ)"
-        android:textSize="18sp" />
-
-    <!-- TimePicker cho Giờ Bắt Đầu -->
-    <TimePicker
-        android:id="@+id/timePickerStart"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSchedule"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!-- TimePicker cho Giờ Kết Thúc -->
-    <TimePicker
-        android:id="@+id/timePickerEnd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!-- Nút Đặt Lịch Hẹn -->
-    <Button
-        android:id="@+id/btnScheduleAppointment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Đặt Lịch Hẹn" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

@@ -37,6 +37,9 @@ public class NavActivity extends AppCompatActivity {
                 case R.id.favorite:
                     replaceFragment(new FavortiteFragment());
                     break;
+                case R.id.notify:
+                    replaceFragment(new NotificationFragment());
+                    break;
                 case R.id.logout:
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(this, LoginActivity.class));

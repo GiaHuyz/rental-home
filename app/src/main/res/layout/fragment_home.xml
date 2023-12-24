@@ -24,18 +24,60 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edtAddressSearch"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="@drawable/background_edittext"
-                    android:drawableStart="@drawable/search_icon"
-                    android:ems="10"
-                    android:hint="Nơi bạn muốn thuê"
-                    android:inputType="text" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:text="Thành Phố: "
+                        android:textColor="@color/black"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey"
+                        android:layout_marginLeft="32dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:text="Quận/Huyện: "
+                        android:textColor="@color/black"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey"
+                        android:layout_marginLeft="16dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
 
                 <EditText
                     android:id="@+id/edtPriceSearch"

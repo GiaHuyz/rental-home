@@ -45,13 +45,14 @@
                     android:id="@+id/tvAddres"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:drawableLeft="@drawable/marker"
                     android:drawablePadding="8dp"
                     android:drawableTint="@color/white"
                     android:text="Sanfransisco, CA 1910"
                     android:textColor="@color/white"
-                    android:textSize="21sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/view" />
@@ -63,31 +64,17 @@
                     android:layout_marginStart="32dp"
                     android:text="Area"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvAddres" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:text="$1000000"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.538" />
 
                 <Button
                     android:id="@+id/btnCall"
@@ -96,25 +83,61 @@
                     android:background="@drawable/rounded_button"
                     android:drawableLeft="@drawable/baseline_phone_forwarded_24"
                     android:text="Call"
-                    app:layout_constraintStart_toEndOf="@+id/tvPrice"
                     app:layout_constraintEnd_toStartOf="@+id/btnFav"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="50dp"
+                    android:background="@drawable/rounded_button"
+                    android:text="Edit"
+                    app:layout_constraintEnd_toStartOf="@+id/btnRemove"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"
+                     />
 
                 <Button
                     android:id="@+id/btnFav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:background="@drawable/rounded_button"
                     android:drawableLeft="@drawable/baseline_favorite_border_24"
                     android:text="Favorite"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/btnCall"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <Button
+                    android:id="@+id/btnRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/rounded_button"
+                    android:text="Remove"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnEdit"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"/>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Price: 3.000.000"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                />
 
             <TextView
                 android:id="@+id/amenities"
@@ -194,8 +217,7 @@
                         android:id="@+id/tvA1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="School"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -219,8 +241,7 @@
                         android:id="@+id/tvA2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Circle K"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -243,8 +264,7 @@
                         android:id="@+id/tvA3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hospital"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -258,40 +278,27 @@
 
                 <!-- Button đầu tiên (button4) -->
                 <Button
-                    android:layout_marginTop="8dp"
-                    android:id="@+id/button4"
+                    android:id="@+id/btnSchedule"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Xem lịch hẹn"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/rounded_3button"
+                    android:text="Xem lịch hẹn"
                     android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/button5"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="32dp"/>
+                    app:layout_constraintEnd_toStartOf="@+id/button8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!-- Button giữa (button5) -->
-                <Button
-                    android:layout_marginTop="8dp"
-                    android:id="@+id/button5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Báo cáo"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/rounded_3button"
-                    app:layout_constraintStart_toEndOf="@id/button4"
-                    app:layout_constraintEnd_toStartOf="@id/button8"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+
 
                 <!-- Button cuối cùng (button8) -->
                 <Button
                     android:id="@+id/button8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/rounded_3button"
@@ -299,8 +306,9 @@
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/button5"
+                    app:layout_constraintStart_toEndOf="@id/btnSchedule"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

@@ -1,5 +1,8 @@
 package com.example.rentalhome.screens;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -20,22 +23,26 @@ import android.widget.Toast;
 import com.example.rentalhome.adapter.CommentsAdapter;
 import com.example.rentalhome.adapter.ImagesAdapter;
 import com.example.rentalhome.contract.CommentContract;
+import com.example.rentalhome.contract.RoomsContract;
 import com.example.rentalhome.contract.UserContract;
 import com.example.rentalhome.databinding.DetailRoomBinding;
 import com.example.rentalhome.dto.Comment;
 import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.CommentPresenter;
+import com.example.rentalhome.presenter.RoomsPresenter;
 import com.example.rentalhome.presenter.UserPresenter;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View, UserContract.View {
+public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View, UserContract.View, RoomsContract.ViewDelete {
     private DetailRoomBinding binding;
     private String roomId;
     private String userId;
@@ -58,6 +65,13 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             return;
         }
 
+        if(bundle.getBoolean("Manage")) {
+            binding.btnFav.setVisibility(View.GONE);
+            binding.btnCall.setVisibility(View.GONE);
+            binding.btnEdit.setVisibility(View.VISIBLE);
+            binding.btnRemove.setVisibility(View.VISIBLE);
+        }
+
         roomId = bundle.getString("Id");
         String rules = bundle.getString("Rules");
         ArrayList<String> images = bundle.getStringArrayList("Images");
@@ -78,9 +92,9 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
 
         binding.tvAmenities.setText(TextUtils.join(", ", amenities));
         binding.tvRules.setText(rules);
-        binding.tvPrice.setText(String.valueOf(price));
+        binding.tvPrice.setText("Price: " + NumberFormat.getCurrencyInstance(new Locale.Builder().setLanguage("vn").setRegion("VN").build()).format(price));
         binding.tvAddres.setText(address);
-        binding.tvArea.setText(String.valueOf(area));
+        binding.tvArea.setText(area + " m\u00B2");
 
         switch (surround.size()) {
             case 1:
@@ -129,10 +143,49 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             }
         });
 
+        binding.btnSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailRoomActivity.this, ScheduleActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("roomId", roomId);
+                bundle.putString("address", address);
+                bundle.putBoolean("isOwner", userId.equals(ownerId));
+                bundle.putString("ownerId", ownerId);
+                bundle.putString("userName", user.getName());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         binding.btnFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 userPresenter.onFavoriteClick(userId, roomId);
+            }
+        });
+
+        binding.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        binding.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(DetailRoomActivity.this)
+                        .setTitle("Xác nhận xóa")
+                        .setMessage("Bạn có chắc chắn muốn xóa phòng này không?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                RoomsPresenter roomsPresenter = new RoomsPresenter(DetailRoomActivity.this);
+                                roomsPresenter.deleteRoom(roomId);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
             }
         });
 
@@ -177,5 +230,19 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRoomDeleted(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("DELETED_ROOM_ID", roomId);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+    @Override
+    public void onRoomDeleteFailure(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

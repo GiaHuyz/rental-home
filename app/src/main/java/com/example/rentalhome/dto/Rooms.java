@@ -8,6 +8,8 @@ public class Rooms {
     private ArrayList<String> images;
     private long price;
     private int area;
+    private String city;
+    private String district;
     private String address;
     private ArrayList<String> amenities;
     private ArrayList<String> surround;
@@ -18,15 +20,33 @@ public class Rooms {
     public Rooms() {
     }
 
-    public Rooms(String ownerId, long price, String address, ArrayList<String> amenities, String status, ArrayList<String> surround, String rules, int area, String phone) {
+    public Rooms(String ownerId, long price, String address, String city, String district, ArrayList<String> amenities, String status, ArrayList<String> surround, String rules, int area) {
         this.ownerId = ownerId;
         this.price = price;
+        this.city = city;
+        this.district = district;
         this.address = address;
         this.amenities = amenities;
         this.status = status;
         this.surround = surround;
         this.rules = rules;
         this.area = area;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public int getArea() {

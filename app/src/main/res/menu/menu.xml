@@ -6,12 +6,16 @@
         android:icon="@drawable/bottom_btn1"/>
     <item
         android:id="@+id/user"
-        android:title="Infor user"
+        android:title="Infor"
         android:icon="@drawable/bottom_btn2"/>
     <item
         android:id="@+id/favorite"
-        android:title="List Favorite"
+        android:title="Favorite"
         android:icon="@drawable/bottom_btn3"/>
+    <item
+        android:id="@+id/notify"
+        android:icon="@drawable/bell"
+        android:title="Notify" />
     <item
         android:id="@+id/logout"
         android:icon="@drawable/baseline_logout_24"

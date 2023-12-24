@@ -58,6 +58,102 @@
 
                 </HorizontalScrollView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:text="Thành Phố: "
+                        android:textColor="@color/black"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey"
+                        android:layout_marginLeft="32dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:text="Quận/Huyện: "
+                        android:textColor="@color/black"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey"
+                        android:layout_marginLeft="16dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvsDiachi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/purple_200"
+                    android:text="Address of room for rent"
+                    android:textColor="@color/black"
+
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+
+                    android:background="@drawable/detail_top_background_with_border"
+                    android:elevation="3dp"
+                    android:orientation="horizontal"
+                    android:padding="1dp">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3333">
+
+                        <EditText
+                            android:id="@+id/edtAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ems="10"
+                            android:inputType="text"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tvtienich"
@@ -322,7 +418,7 @@
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.154"
+                            app:layout_constraintHorizontal_bias="0.014"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -377,96 +473,6 @@
                     <!-- Tương tự cho các phần còn lại, thay TextView bằng RadioButton -->
                     <!-- ... -->
 
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvsDiachi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@color/purple_200"
-                    android:text="Address of room for rent"
-                    android:textColor="@color/black"
-
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-
-                    android:background="@drawable/detail_top_background_with_border"
-                    android:elevation="3dp"
-                    android:orientation="horizontal"
-                    android:padding="1dp">
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.3333">
-
-                        <EditText
-                            android:id="@+id/edtAddress"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:ems="10"
-                            android:inputType="text"
-
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@color/purple_200"
-                    android:text="Phone"
-                    android:textColor="@color/black"
-
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-
-                    android:background="@drawable/detail_top_background_with_border"
-                    android:elevation="3dp"
-                    android:orientation="horizontal"
-                    android:padding="1dp">
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.3333">
-
-                        <EditText
-                            android:id="@+id/edtPhone"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:ems="10"
-                            android:inputType="number"
-
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
                 <TextView

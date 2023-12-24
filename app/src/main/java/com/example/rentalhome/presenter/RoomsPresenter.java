@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 public class RoomsPresenter implements RoomsContract.Presenter {
     private RoomsContract.View view;
+    private RoomsContract.ViewDelete viewDelete;
     private RoomsContract.Model model;
 
     public RoomsPresenter(RoomsContract.View view) {
@@ -18,9 +19,14 @@ public class RoomsPresenter implements RoomsContract.Presenter {
         this.model = new RoomsModel();
     }
 
+    public RoomsPresenter(RoomsContract.ViewDelete view) {
+        this.viewDelete = view;
+        this.model = new RoomsModel();
+    }
+
     @Override
-    public void loadRooms(String address, @Nullable Integer price, @Nullable List<String> amenities) {
-        model.getRooms(address, price, amenities, new RoomsContract.Model.OnRoomsLoadListener() {
+    public void loadRooms(String city, String district, @Nullable Integer price, @Nullable List<String> amenities) {
+        model.getRooms(city, district, price, amenities, new RoomsContract.Model.OnRoomsLoadListener() {
             @Override
             public void onRoomsLoaded(ArrayList<Rooms> roomList) {
                 view.onRoomsLoaded(roomList);
@@ -44,6 +50,36 @@ public class RoomsPresenter implements RoomsContract.Presenter {
             @Override
             public void onRoomsLoadFailure(String message) {
                 view.onRoomsLoadFailure(message);
+            }
+        });
+    }
+
+    @Override
+    public void loadRoomsByOwnerId(String ownerId) {
+        model.getRoomByOwnerId(ownerId, new RoomsContract.Model.OnRoomsLoadListener() {
+            @Override
+            public void onRoomsLoaded(ArrayList<Rooms> roomList) {
+                view.onRoomsLoaded(roomList);
+            }
+
+            @Override
+            public void onRoomsLoadFailure(String message) {
+                view.onRoomsLoadFailure(message);
+            }
+        });
+    }
+
+    @Override
+    public void deleteRoom(String roomId) {
+        model.deleteRoom(roomId, new RoomsContract.Model.OnRoomDeletedListener() {
+            @Override
+            public void onDeleted(String message) {
+                viewDelete.onRoomDeleted(message);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                viewDelete.onRoomDeleteFailure(message);
             }
         });
     }

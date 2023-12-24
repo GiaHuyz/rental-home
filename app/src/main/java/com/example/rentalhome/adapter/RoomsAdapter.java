@@ -17,7 +17,9 @@ import com.example.rentalhome.R;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.screens.DetailRoomActivity;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHolder> {
     private ArrayList<Rooms> roomList;
@@ -26,6 +28,11 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHold
     public RoomsAdapter(ArrayList<Rooms> roomList, OnItemClickListener itemClickListener) {
         this.roomList = roomList;
         this.itemClickListener = itemClickListener;
+    }
+
+    public void removeAt(int position) {
+        roomList.remove(position);
+        notifyItemRemoved(position);
     }
 
     public interface OnItemClickListener {
@@ -43,8 +50,8 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHold
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         Rooms room = roomList.get(position);
         holder.tvAddress.setText(room.getAddress());
-        holder.tvPrice.setText("Price: " + String.valueOf(room.getPrice()));
-        holder.tvArea.setText("Area: " + String.valueOf(room.getArea()));
+        holder.tvPrice.setText("Price: " + NumberFormat.getCurrencyInstance(new Locale.Builder().setLanguage("vn").setRegion("VN").build()).format(room.getPrice()));
+        holder.tvArea.setText("Area: " + room.getArea() + " m\u00B2");
         String imageUrl = room.getImages().get(0);
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(holder.itemView.getContext()).load(imageUrl).into(holder.imgHome);
@@ -63,6 +70,9 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.RoomViewHold
         return roomList.size();
     }
 
+    public Rooms getItem(int position) {
+        return roomList.get(position);
+    }
     public void updateRoomList(ArrayList<Rooms> newRoomList) {
         roomList.clear();
         roomList.addAll(newRoomList);

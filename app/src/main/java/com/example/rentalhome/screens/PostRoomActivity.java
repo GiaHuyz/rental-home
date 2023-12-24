@@ -3,6 +3,9 @@ package com.example.rentalhome.screens;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,9 +17,12 @@ import com.example.rentalhome.contract.PostRoomContract;
 import com.example.rentalhome.databinding.PostRoomDetailBinding;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.presenter.PostRoomPresenter;
+import com.example.rentalhome.service.ApiProvincesHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PostRoomActivity extends AppCompatActivity implements PostRoomContract.View {
     private PostRoomDetailBinding binding;
@@ -30,7 +36,41 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
         binding = PostRoomDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        presenter = new PostRoomPresenter(this);
+        ApiProvincesHelper.loadCities("https://provinces.open-api.vn/api/", this, binding.spinnerCity, binding.spinnerDistrict);
+        presenter = new PostRoomPresenter(this, this);
+
+        binding.edtFee.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            private String current = "";
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!s.toString().equals(current)){
+                    binding.edtFee.removeTextChangedListener(this);
+
+                    String cleanString = s.toString().replaceAll("[₫,]", "");
+
+                    if(!cleanString.isEmpty()){
+                        long price = Long.parseLong(cleanString);
+                        String formatted = NumberFormat.getCurrencyInstance(new Locale.Builder().setLanguage("vn").setRegion("VN").build()).format(price);
+
+                        current = formatted;
+                        binding.edtFee.setText(formatted);
+                        binding.edtFee.setSelection(formatted.length());
+                    }
+
+                    binding.edtFee.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         binding.btnUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,18 +86,25 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!validateInput()) {
+                    return;
+                }
                 Rooms rooms = new Rooms(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                        Long.parseLong(binding.edtFee.getText().toString()),
-                        binding.edtAddress.getText().toString(), getAmenities(),
-                        "available", getSurround(), binding.edtRules.getText().toString(),
-                        Integer.parseInt(binding.edtArea.getText().toString()), binding.edtPhone.getText().toString());
+                        Long.parseLong(binding.edtFee.getText().toString().replaceAll("[₫,]", "")),
+                        binding.edtAddress.getText().toString(),
+                        binding.spinnerCity.getSelectedItem().toString(),
+                        binding.spinnerDistrict.getSelectedItem().toString(),
+                        getAmenities(),
+                        "available",
+                        getSurround(),
+                        binding.edtRules.getText().toString(),
+                        Integer.parseInt(binding.edtArea.getText().toString()));
 
                 presenter.onLoginClick(rooms, imageUris);
-                finish();
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -89,6 +136,49 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageURI(imageUri);
         binding.imagesContainer.addView(imageView);
+    }
+
+    private boolean validateInput() {
+        if(imageUris.isEmpty()) {
+            Toast.makeText(this, "Image is required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String address = binding.edtAddress.getText().toString();
+        if (address.isEmpty()) {
+            binding.edtAddress.setError("Address is required");
+            return false;
+        }
+
+        if(getAmenities().isEmpty()) {
+            Toast.makeText(this, "Amenities is required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String area = binding.edtArea.getText().toString();
+        if (area.isEmpty()) {
+            binding.edtArea.setError("Area is required");
+            return false;
+        }
+
+        String fee = binding.edtFee.getText().toString();
+        if (fee.isEmpty()) {
+            binding.edtFee.setError("Fee is required");
+            return false;
+        }
+
+        if(getSurround().isEmpty()) {
+            Toast.makeText(this, "Surround is required", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String rules = binding.rules.getText().toString();
+        if (rules.isEmpty()) {
+            binding.rules.setError("Rules is required");
+            return false;
+        }
+
+        return true;
     }
 
     private ArrayList<String> getAmenities() {
@@ -148,6 +238,7 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
 
     @Override
     public void showSuccessMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

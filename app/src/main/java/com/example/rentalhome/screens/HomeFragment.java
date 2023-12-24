@@ -11,12 +11,23 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.rentalhome.databinding.FragmentHomeBinding;
 import com.example.rentalhome.dto.User;
+import com.example.rentalhome.service.ApiProvincesHelper;
+import com.example.rentalhome.service.City;
+import com.example.rentalhome.service.District;
+import com.example.rentalhome.service.ProvincesService;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -32,6 +43,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ApiProvincesHelper.loadCities("https://provinces.open-api.vn/api/", getContext(), binding.spinnerCity, binding.spinnerDistrict);
         user = (User) getArguments().getSerializable("USER");
 
         binding.btnPost.setOnClickListener(new View.OnClickListener() {
@@ -45,18 +57,15 @@ public class HomeFragment extends Fragment {
         binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!TextUtils.isEmpty(binding.edtAddressSearch.getText())) {
-                    Intent intent = new Intent(getActivity(), ListRoomActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("USER", user);
-                    bundle.putString("ADDRESS", binding.edtAddressSearch.getText().toString());
-                    bundle.putString("PRICE", binding.edtPriceSearch.getText().toString());
-                    bundle.putStringArrayList("AMENITIES", getAmenities());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "Address is required", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(getActivity(), ListRoomActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("USER", user);
+                bundle.putString("CITY", binding.spinnerCity.getSelectedItem().toString());
+                bundle.putString("DISTRICT", binding.spinnerDistrict.getSelectedItem().toString());
+                bundle.putString("PRICE", binding.edtPriceSearch.getText().toString());
+                bundle.putStringArrayList("AMENITIES", getAmenities());
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

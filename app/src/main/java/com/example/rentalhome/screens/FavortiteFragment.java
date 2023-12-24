@@ -25,7 +25,9 @@ import java.util.ArrayList;
 
 public class FavortiteFragment extends Fragment implements RoomsContract.View {
     private FragmentFavortiteBinding binding;
+    private String userId;
     private RoomsAdapter adapter;
+    private RoomsPresenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +43,7 @@ public class FavortiteFragment extends Fragment implements RoomsContract.View {
         binding.rvFavorite.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         User user = (User) getArguments().getSerializable("USER");
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         adapter = new RoomsAdapter(new ArrayList<>(), new RoomsAdapter.OnItemClickListener() {
             @Override
@@ -64,8 +67,8 @@ public class FavortiteFragment extends Fragment implements RoomsContract.View {
         });
         binding.rvFavorite.setAdapter(adapter);
 
-        RoomsPresenter presenter = new RoomsPresenter(this);
-        presenter.loadFavorite(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        presenter = new RoomsPresenter(this);
+        presenter.loadFavorite(userId);
     }
 
     @Override
@@ -77,5 +80,4 @@ public class FavortiteFragment extends Fragment implements RoomsContract.View {
     public void onRoomsLoadFailure(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-
 }

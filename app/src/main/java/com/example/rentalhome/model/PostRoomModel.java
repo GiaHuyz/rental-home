@@ -29,13 +29,17 @@ public class PostRoomModel implements PostRoomContract.Model {
 
         Map<String, Object> roomMap = new HashMap<>();
         roomMap.put("ownerId", room.getOwnerId());
+        roomMap.put("city", room.getCity());
+        roomMap.put("district", room.getDistrict());
+        roomMap.put("address", String.format("%s, %s, %s", room.getCity(), room.getDistrict(), room.getAddress()));
         roomMap.put("price", room.getPrice());
-        roomMap.put("address", room.getAddress());
         roomMap.put("amenities", room.getAmenities());
         roomMap.put("surround", room.getSurround());
         roomMap.put("status", room.getStatus());
         roomMap.put("currentTenants", room.getCurrentTenants());
         roomMap.put("viewings", room.getViewings());
+        roomMap.put("area", room.getArea());
+        roomMap.put("rules", room.getRules());
 
         newRoomRef.set(roomMap).addOnSuccessListener(aVoid -> {
             uploadImagesAndSetUrls(uris, newRoomRef, listener);

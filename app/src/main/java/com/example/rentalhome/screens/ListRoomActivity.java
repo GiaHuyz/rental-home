@@ -1,5 +1,7 @@
 package com.example.rentalhome.screens;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,17 +17,21 @@ import com.example.rentalhome.databinding.ListRoomSearchBinding;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.RoomsPresenter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ListRoomActivity extends AppCompatActivity implements RoomsContract.View {
     private ListRoomSearchBinding binding;
     private RoomsAdapter adapter;
     private RoomsPresenter presenter;
-    private String address;
     private Integer price;
     private List<String> amenities;
+    private boolean manage;
+    private String city, district;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +41,13 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
 
         binding.rvHomes.setLayoutManager(new LinearLayoutManager(this));
 
-        User user = (User) getIntent().getSerializableExtra("USER");
-
         Bundle b = getIntent().getExtras();
-        address = b.getString("ADDRESS");
+        User user = (User) b.getSerializable("USER");
+        city = b.getString("CITY");
+        district = b.getString("DISTRICT");
+        manage = b.getBoolean("Manage");
 
-        if(TextUtils.isEmpty(getIntent().getStringExtra("PRICE"))) {
+        if(TextUtils.isEmpty(b.getString("PRICE"))) {
             price = null;
         } else {
             price = Integer.parseInt(b.getString("PRICE"));
@@ -63,14 +70,37 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
                 bundle.putStringArrayList("Surround", room.getSurround());
                 bundle.putString("ownerId", room.getOwnerId());
                 bundle.putSerializable("User", user);
+                bundle.putBoolean("Manage", manage);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         binding.rvHomes.setAdapter(adapter);
 
         presenter = new RoomsPresenter(this);
-        presenter.loadRooms(address, price, amenities);
+
+        if(manage) {
+            presenter.loadRoomsByOwnerId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        } else {
+            presenter.loadRooms(city, district, price, amenities);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            if (data != null && data.hasExtra("DELETED_ROOM_ID")) {
+                String deletedRoomId = data.getStringExtra("DELETED_ROOM_ID");
+                for (int i = 0; i < adapter.getItemCount(); i++) {
+                    if (adapter.getItem(i).getRoomId().equals(deletedRoomId)) {
+                        adapter.removeAt(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -82,4 +112,5 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
     public void onRoomsLoadFailure(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
 }

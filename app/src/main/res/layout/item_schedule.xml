@@ -1,5 +1,4 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,60 +9,73 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            app:cardCornerRadius="20dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4">
-
-            <ImageView
-                android:id="@+id/imgHome"
-                android:scaleType="fitXY"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:srcCompat="@drawable/pic2" />
-        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="5"
+            android:layout_weight="1"
             android:layout_marginLeft="5dp">
+
+            <TextView
+                android:id="@+id/tvId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tvAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/marker"
                 android:drawablePadding="5dp"
                 android:textSize="16dp"
-                android:layout_marginTop="10dp"
                 android:text="Address" />
 
             <TextView
-                android:id="@+id/tvPrice"
+                android:id="@+id/tvDayOfWeek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="16dp"
-                android:text="Price" />
+                android:text="Day Of Week: " />
 
             <TextView
-                android:id="@+id/tvArea"
+                android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="16dp"
-                android:text="Area" />
+                android:text="Time: " />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginRight="5dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnBook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="Book" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:minHeight="48dp"
+                android:text="Cancel" />
 
         </LinearLayout>
 
-    </LinearLayout>
 
+    </LinearLayout>
 
 
 </androidx.cardview.widget.CardView>

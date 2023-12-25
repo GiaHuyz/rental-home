@@ -121,6 +121,7 @@
                                     android:drawableStart="@drawable/baseline_mail_24"
                                     android:hint="Email"
                                     android:inputType="text"
+                                    android:enabled="false"
                                     android:minHeight="48dp" />
 
                                 <LinearLayout
@@ -138,7 +139,7 @@
                                         android:layout_marginRight="10dp"
                                         android:backgroundTint="#BD2C2C"
                                         android:minHeight="48dp"
-                                        android:text="room manage" />
+                                        android:text="my room" />
 
                                     <Button
                                         android:id="@+id/btnChangePass"

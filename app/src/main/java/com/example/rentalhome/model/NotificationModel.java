@@ -53,6 +53,7 @@ public class NotificationModel implements NotificationContract.Model {
                         for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
                             Notification notification = snapshot.toObject(Notification.class);
                             if (notification != null) {
+                                notification.setId(snapshot.getId());
                                 notifications.add(notification);
                             }
                         }

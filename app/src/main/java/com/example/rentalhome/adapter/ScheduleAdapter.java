@@ -49,6 +49,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         holder.tvAddress.setText(schedule.getAddress());
         holder.tvDayOfWeek.setText(schedule.getDayOfWeek());
         holder.tvTime.setText(schedule.getFrom() + " - " + schedule.getTo());
+        holder.tvStatus.setText(schedule.getStatus());
         holder.btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +64,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     }
 
     static class ScheduleViewHolder extends RecyclerView.ViewHolder {
-        TextView tvId, tvAddress, tvDayOfWeek, tvTime;
+        TextView tvId, tvAddress, tvDayOfWeek, tvTime, tvStatus;
         Button btnBook, btnCancel;
 
         ScheduleViewHolder(View itemView) {
@@ -72,6 +73,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
             tvAddress = itemView.findViewById(R.id.tvAddress);
             tvDayOfWeek = itemView.findViewById(R.id.tvDayOfWeek);
             tvTime = itemView.findViewById(R.id.tvTime);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
             btnBook = itemView.findViewById(R.id.btnBook);
             btnCancel = itemView.findViewById(R.id.btnCancel);
         }

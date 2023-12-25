@@ -23,14 +23,19 @@ import android.widget.Toast;
 import com.example.rentalhome.adapter.CommentsAdapter;
 import com.example.rentalhome.adapter.ImagesAdapter;
 import com.example.rentalhome.contract.CommentContract;
+import com.example.rentalhome.contract.NotificationContract;
 import com.example.rentalhome.contract.RoomsContract;
 import com.example.rentalhome.contract.UserContract;
 import com.example.rentalhome.databinding.DetailRoomBinding;
 import com.example.rentalhome.dto.Comment;
+import com.example.rentalhome.dto.Notification;
+import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.dto.User;
 import com.example.rentalhome.presenter.CommentPresenter;
+import com.example.rentalhome.presenter.NotificationPresenter;
 import com.example.rentalhome.presenter.RoomsPresenter;
 import com.example.rentalhome.presenter.UserPresenter;
+import com.example.rentalhome.service.StripeService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -43,14 +48,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View, UserContract.View, RoomsContract.ViewDelete {
+public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View, UserContract.View, RoomsContract.ViewDelete, NotificationContract.View {
     private DetailRoomBinding binding;
     private String roomId;
     private String userId;
-    private User user, owner;
+    private User user;
     private CommentPresenter commentPresenter;
     private UserPresenter userPresenter;
     private CommentsAdapter commentsAdapter;
+    private boolean isRented = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,19 +74,29 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         if(bundle.getBoolean("Manage")) {
             binding.btnFav.setVisibility(View.GONE);
             binding.btnCall.setVisibility(View.GONE);
+            binding.btnCheckout.setVisibility(View.GONE);
             binding.btnEdit.setVisibility(View.VISIBLE);
             binding.btnRemove.setVisibility(View.VISIBLE);
         }
 
-        roomId = bundle.getString("Id");
-        String rules = bundle.getString("Rules");
-        ArrayList<String> images = bundle.getStringArrayList("Images");
-        long price = bundle.getLong("Price");
-        String address = bundle.getString("Address");
-        ArrayList<String> amenities = bundle.getStringArrayList("Amenities");
-        int area = bundle.getInt("Area");
-        ArrayList<String> surround = bundle.getStringArrayList("Surround");
-        String ownerId = bundle.getString("ownerId");
+        Rooms room = (Rooms) bundle.getSerializable("Room");
+
+        if(room.getContract() != null && !TextUtils.isEmpty(room.getCurrentTenant())) {
+            isRented = true;
+            binding.btnFav.setVisibility(View.GONE);
+            binding.btnSchedule.setVisibility(View.GONE);
+            binding.btnContract.setVisibility(View.VISIBLE);
+        }
+
+        roomId = room.getRoomId();
+        String rules = room.getRules();
+        ArrayList<String> images = room.getImages();
+        long price = room.getPrice();
+        String address = room.getAddress();
+        ArrayList<String> amenities = room.getAmenities();
+        int area = room.getArea();
+        ArrayList<String> surround = room.getSurround();
+        String ownerId = room.getOwnerId();
 
         user = (User) bundle.getSerializable("User");
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -168,13 +184,6 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         binding.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-
-        binding.btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 new AlertDialog.Builder(DetailRoomActivity.this)
                         .setTitle("Xác nhận xóa")
                         .setMessage("Bạn có chắc chắn muốn xóa phòng này không?")
@@ -189,7 +198,50 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             }
         });
 
+        StripeService stripeService = new StripeService(this, room.getPrice());
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isRented) {
+                    stripeService.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                        @Override
+                        public void onPaymentSuccess() {
+                            NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
+                            notificationPresenter.sendNotification(new Notification(ownerId,
+                                    String.format("%s, %s, %s đã thanh toán tiền thuê nhà %s",
+                                            user.getName(), user.getPhone(), user.getEmail(), address)));
+                        }
+                    });
+                } else {
+                    Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    db.collection("users").document(userId)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    User owner = documentSnapshot.toObject(User.class);
+                                    Bundle b = new Bundle();
+                                    b.putString("roomId", roomId);
+                                    b.putString("ownerId", ownerId);
+                                    b.putString("nameA", owner.getName());
+                                    b.putString("phoneA", owner.getPhone());
+                                    b.putString("emailA", owner.getEmail());
+                                    b.putString("address", address);
+                                    b.putString("fee", String.valueOf(price));
+                                    b.putString("nameB", user.getName());
+                                    b.putString("phoneB", user.getPhone());
+                                    b.putString("emailB", user.getEmail());
+                                    b.putString("userIdB", userId);
+                                    intent.putExtras(b);
+                                    startActivityForResult(intent, 2);
+                                }
+                            });
+                }
+            }
+        });
+
+        binding.btnContract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
@@ -201,6 +253,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                             if (documentSnapshot.exists()) {
                                 User owner = documentSnapshot.toObject(User.class);
                                 Bundle b = new Bundle();
+                                b.putBoolean("show", true);
                                 b.putString("nameA", owner.getName());
                                 b.putString("phoneA", owner.getPhone());
                                 b.putString("emailA", owner.getEmail());
@@ -213,7 +266,6 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                                 startActivity(intent);
                             }
                         });
-
             }
         });
 
@@ -236,8 +288,23 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+            binding.btnFav.setVisibility(View.GONE);
+            binding.btnCheckout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
     public void showErrorMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void loadNotification(List<Notification> notificationList) {
+
     }
 
     @Override

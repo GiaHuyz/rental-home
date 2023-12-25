@@ -167,6 +167,11 @@ public class PostRoomActivity extends AppCompatActivity implements PostRoomContr
             return false;
         }
 
+        if(Long.parseLong(binding.edtFee.getText().toString().replaceAll("[₫,]", "")) < 500000) {
+            binding.edtFee.setError("Fee at least 500.000₫");
+            return false;
+        }
+
         if(getSurround().isEmpty()) {
             Toast.makeText(this, "Surround is required", Toast.LENGTH_SHORT).show();
             return false;

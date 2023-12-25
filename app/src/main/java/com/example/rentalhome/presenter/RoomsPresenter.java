@@ -55,8 +55,8 @@ public class RoomsPresenter implements RoomsContract.Presenter {
     }
 
     @Override
-    public void loadRoomsByOwnerId(String ownerId) {
-        model.getRoomByOwnerId(ownerId, new RoomsContract.Model.OnRoomsLoadListener() {
+    public void getMyRooms(String userId) {
+        model.getMyRooms(userId, new RoomsContract.Model.OnRoomsLoadListener() {
             @Override
             public void onRoomsLoaded(ArrayList<Rooms> roomList) {
                 view.onRoomsLoaded(roomList);

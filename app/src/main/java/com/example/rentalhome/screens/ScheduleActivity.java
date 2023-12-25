@@ -22,13 +22,17 @@ import com.example.rentalhome.dto.Schedule;
 import com.example.rentalhome.presenter.NotificationPresenter;
 import com.example.rentalhome.presenter.SchedulePresenter;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity implements ScheduleContract.View, NotificationContract.View {
     private ActivityAppointmentScheduleBinding binding;
@@ -93,10 +97,19 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         adapter = new ScheduleAdapter(new ArrayList<>(), isOwner, new ScheduleAdapter.OnItemClickListener() {
             @Override
             public void onClick(Schedule schedule) {
-                notificationPresenter = new NotificationPresenter(ScheduleActivity.this);
-                notificationPresenter.sendNotification(new Notification(ownerId,
-                        String.format("%s đã đặt lịch hẹn %s, %s - %s cho trọ %s", userName,
-                                schedule.getDayOfWeek(), schedule.getFrom(), schedule.getTo(), address)));
+                if(schedule.getStatus().equals("booked")) {
+                    Toast.makeText(ScheduleActivity.this, "Đã có người đặt", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("rooms").document(roomId).update("status", "booked");
+                    notificationPresenter = new NotificationPresenter(ScheduleActivity.this);
+                    notificationPresenter.sendNotification(new Notification(ownerId,
+                            String.format("%s đã đặt lịch hẹn %s, %s - %s cho trọ %s", userName,
+                                    schedule.getDayOfWeek(), schedule.getFrom(), schedule.getTo(), address)));
+                    notificationPresenter.sendNotification(new Notification(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            String.format("Bạn đã đặt lịch hẹn %s, %s - %s cho trọ %s", userName,
+                                    schedule.getDayOfWeek(), schedule.getFrom(), schedule.getTo(), address)));
+                }
             }
         });
 

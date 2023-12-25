@@ -1,8 +1,9 @@
 package com.example.rentalhome.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Rooms {
+public class Rooms implements Serializable {
     private String roomId;
     private String ownerId;
     private ArrayList<String> images;
@@ -14,9 +15,9 @@ public class Rooms {
     private ArrayList<String> amenities;
     private ArrayList<String> surround;
     private String status;
-    private ArrayList<String> currentTenants;
-    private ArrayList<String> viewings;
+    private String currentTenant;
     private String rules;
+    private Contract contract;
     public Rooms() {
     }
 
@@ -121,12 +122,12 @@ public class Rooms {
         this.status = status;
     }
 
-    public ArrayList<String> getCurrentTenants() {
-        return currentTenants;
+    public String getCurrentTenant() {
+        return currentTenant;
     }
 
-    public void setCurrentTenants(ArrayList<String> currentTenants) {
-        this.currentTenants = currentTenants;
+    public void setCurrentTenant(String currentTenant) {
+        this.currentTenant = currentTenant;
     }
 
     public ArrayList<String> getSurround() {
@@ -137,11 +138,11 @@ public class Rooms {
         this.surround = surround;
     }
 
-    public ArrayList<String> getViewings() {
-        return viewings;
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setViewings(ArrayList<String> viewings) {
-        this.viewings = viewings;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 }

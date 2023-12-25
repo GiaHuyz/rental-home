@@ -994,7 +994,7 @@ Trong quá trình thực hiện nếu phát hiện thấy những vấn đề c�
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView71"
+                        android:id="@+id/tvBenThue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="(Ký, ghi rõ họ tên)"
@@ -1016,7 +1016,7 @@ Trong quá trình thực hiện nếu phát hiện thấy những vấn đề c�
                         app:layout_constraintTop_toTopOf="@+id/textView70" />
 
                     <TextView
-                        android:id="@+id/textView73"
+                        android:id="@+id/tvBenChoThue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
@@ -1030,6 +1030,7 @@ Trong quá trình thực hiện nếu phát hiện thấy những vấn đề c�
             </LinearLayout>
 
             <Button
+                android:id="@+id/btnSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Xác nhận"

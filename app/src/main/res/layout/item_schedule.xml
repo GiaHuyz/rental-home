@@ -48,6 +48,15 @@
                 android:layout_marginTop="5dp"
                 android:textSize="16dp"
                 android:text="Time: " />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="16dp"
+                android:text="Status: " />
+
         </LinearLayout>
 
         <LinearLayout

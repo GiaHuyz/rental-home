@@ -1,6 +1,5 @@
 package com.example.rentalhome.screens;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -60,15 +59,7 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
             public void onItemClick(Rooms room) {
                 Intent intent = new Intent(ListRoomActivity.this, DetailRoomActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("Id", room.getRoomId());
-                bundle.putString("Rules",room.getRules());
-                bundle.putStringArrayList("Images", room.getImages());
-                bundle.putLong("Price", room.getPrice());
-                bundle.putString("Address", room.getAddress());
-                bundle.putStringArrayList("Amenities",room.getAmenities());
-                bundle.putInt("Area", room.getArea());
-                bundle.putStringArrayList("Surround", room.getSurround());
-                bundle.putString("ownerId", room.getOwnerId());
+                bundle.putSerializable("Room", room);
                 bundle.putSerializable("User", user);
                 bundle.putBoolean("Manage", manage);
                 intent.putExtras(bundle);
@@ -80,7 +71,7 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
         presenter = new RoomsPresenter(this);
 
         if(manage) {
-            presenter.loadRoomsByOwnerId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            presenter.getMyRooms(FirebaseAuth.getInstance().getCurrentUser().getUid());
         } else {
             presenter.loadRooms(city, district, price, amenities);
         }

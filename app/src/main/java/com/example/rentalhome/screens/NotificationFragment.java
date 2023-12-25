@@ -40,7 +40,7 @@ public class NotificationFragment extends Fragment implements NotificationContra
         NotificationPresenter presenter = new NotificationPresenter(this);
         binding.rvNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new NotificationAdapter(new ArrayList<>());
+        adapter = new NotificationAdapter(getContext(), new ArrayList<>());
 
         binding.rvNotifications.setAdapter(adapter);
         presenter.loadNotifications(FirebaseAuth.getInstance().getCurrentUser().getUid());

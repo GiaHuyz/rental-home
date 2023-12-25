@@ -36,7 +36,6 @@ public class PostRoomModel implements PostRoomContract.Model {
         roomMap.put("amenities", room.getAmenities());
         roomMap.put("surround", room.getSurround());
         roomMap.put("status", room.getStatus());
-        roomMap.put("currentTenant", room.getCurrentTenant());
         roomMap.put("area", room.getArea());
         roomMap.put("rules", room.getRules());
 

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rentalhome.R;
 import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.dto.Schedule;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +44,19 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
         Schedule schedule = scheduleList.get(position);
         if(isOwner) {
-            holder.btnBook.setVisibility(View.GONE);   
+            holder.btnBook.setVisibility(View.GONE);
+            holder.btnCancel.setVisibility(View.VISIBLE);
         }
         holder.tvId.setText(schedule.getScheduleId());
         holder.tvAddress.setText(schedule.getAddress());
         holder.tvDayOfWeek.setText(schedule.getDayOfWeek());
         holder.tvTime.setText(schedule.getFrom() + " - " + schedule.getTo());
         holder.tvStatus.setText(schedule.getStatus());
-        holder.btnBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemClickListener.onClick(schedule);
-            }
+
+        holder.btnBook.setOnClickListener(v -> itemClickListener.onClick(schedule));
+        holder.btnCancel.setOnClickListener(v -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("notifications").document(schedule.getScheduleId()).delete();
         });
     }
 

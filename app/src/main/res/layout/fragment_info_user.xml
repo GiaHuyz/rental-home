@@ -142,25 +142,14 @@
                                         android:text="my room" />
 
                                     <Button
-                                        android:id="@+id/btnChangePass"
+                                        android:id="@+id/btnEdit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="20dp"
-                                        android:backgroundTint="#1C91AE"
                                         android:minHeight="48dp"
-                                        android:text="Change Password" />
-
+                                        android:text="Save" />
                                 </LinearLayout>
 
-                                <Button
-                                    android:id="@+id/btnEdit"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="10dp"
-                                    android:background="@drawable/rounded_3button"
-                                    android:minHeight="48dp"
-                                    android:text="Save" />
+
 
                             </LinearLayout>
 

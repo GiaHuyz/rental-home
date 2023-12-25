@@ -14,6 +14,7 @@ import com.example.rentalhome.databinding.ActivityContractBinding;
 import com.example.rentalhome.dto.Notification;
 import com.example.rentalhome.presenter.NotificationPresenter;
 import com.example.rentalhome.service.StripeService;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -87,9 +88,15 @@ public class ContractActivity extends AppCompatActivity implements NotificationC
                         updateData.put("status", "rented");
                         updateData.put("currentTenant", userIdB);
 
-                        db.collection("rooms").document(roomId).update(updateData);
-                        notificationPresenter.sendNotification(new Notification(ownerId,
-                                String.format("%s, %s, %s đã thanh toán và xác nhận thuê nhà %s", nameB, phoneB, emailB, address)));
+                        db.collection("rooms").document(roomId).update(updateData)
+                                .addOnSuccessListener(unused -> {
+                                    notificationPresenter.sendNotification(new Notification(ownerId,
+                                            String.format("%s, %s, %s đã thanh toán và xác nhận thuê nhà %s", nameB, phoneB, emailB, address)));
+                                    notificationPresenter.sendNotification(new Notification(userIdB,
+                                            String.format("Bạn đã thanh toán và xác nhận thuê nhà %s", address)));
+                                    setResult(Activity.RESULT_OK);
+                                    finish();
+                                });
                     }
                 });
             }
@@ -103,7 +110,6 @@ public class ContractActivity extends AppCompatActivity implements NotificationC
 
     @Override
     public void loadNotification(List<Notification> notificationList) {
-        setResult(Activity.RESULT_OK);
-        finish();
+
     }
 }

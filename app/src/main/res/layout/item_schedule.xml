@@ -79,7 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:minHeight="48dp"
-                android:text="Cancel" />
+                android:text="Cancel"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

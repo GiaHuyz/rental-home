@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -37,16 +38,15 @@ import com.example.rentalhome.presenter.RoomsPresenter;
 import com.example.rentalhome.presenter.UserPresenter;
 import com.example.rentalhome.service.StripeService;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class DetailRoomActivity extends AppCompatActivity implements CommentContract.View, UserContract.View, RoomsContract.ViewDelete, NotificationContract.View {
     private DetailRoomBinding binding;
@@ -57,6 +57,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     private UserPresenter userPresenter;
     private CommentsAdapter commentsAdapter;
     private boolean isRented = false;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             binding.btnFav.setVisibility(View.GONE);
             binding.btnCall.setVisibility(View.GONE);
             binding.btnCheckout.setVisibility(View.GONE);
-            binding.btnEdit.setVisibility(View.VISIBLE);
+            binding.btnDeposit.setVisibility(View.GONE);
             binding.btnRemove.setVisibility(View.VISIBLE);
         }
 
@@ -85,7 +86,15 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             isRented = true;
             binding.btnFav.setVisibility(View.GONE);
             binding.btnSchedule.setVisibility(View.GONE);
+            binding.btnDeposit.setVisibility(View.GONE);
             binding.btnContract.setVisibility(View.VISIBLE);
+            binding.tvInforTenant.setVisibility(View.VISIBLE);
+            binding.btnRemoveTenant.setVisibility(View.VISIBLE);
+            binding.tvInforTenant.setText(room.getCurrentTenant());
+            db.collection("users").document(room.getCurrentTenant()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+               User tenant = queryDocumentSnapshots.toObject(User.class);
+               binding.tvInforTenant.setText("Tenant: " + tenant.getName() + ", " + tenant.getPhone() + ", " + tenant.getEmail());
+            });
         }
 
         roomId = room.getRoomId();
@@ -210,11 +219,13 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                             notificationPresenter.sendNotification(new Notification(ownerId,
                                     String.format("%s, %s, %s đã thanh toán tiền thuê nhà %s",
                                             user.getName(), user.getPhone(), user.getEmail(), address)));
+                            notificationPresenter.sendNotification(new Notification(userId,
+                                    String.format("Bạn đã thanh toán tiền thuê nhà %s", address)));
                         }
                     });
                 } else {
                     Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db = FirebaseFirestore.getInstance();
 
                     db.collection("users").document(userId)
                             .get()
@@ -245,8 +256,6 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
                 db.collection("users").document(userId)
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
@@ -267,6 +276,40 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                             }
                         });
             }
+        });
+
+        StripeService deposit = new StripeService(this,  room.getPrice() * 20 / 100);
+        binding.btnDeposit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(room.getStatus().equals("empty")) {
+                    deposit.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                        @Override
+                        public void onPaymentSuccess() {
+                            db.collection("rooms").document(roomId).update("status", "deposited")
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(DetailRoomActivity.this, "Bạn đã đặt cọc thành công", Toast.LENGTH_SHORT).show();
+                                        NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
+                                        notificationPresenter.sendNotification(new Notification(userId,
+                                                String.format("Bạn đã đặt cọc thành công nhà %s", address)));
+                                        notificationPresenter.sendNotification(new Notification(ownerId,
+                                                String.format("%s, %s, %s đã đặt cọc nhà %s",
+                                                        user.getName(), user.getPhone(), user.getEmail(), address)));
+                                    })
+
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(DetailRoomActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                }
+            }
+        });
+
+        binding.btnRemoveTenant.setOnClickListener(v -> {
+            Map<String, Object> updateData = new HashMap<>();
+            updateData.put("status", "empty");
+            updateData.put("currentTenant", FieldValue.delete());
+            db.collection("rooms").document(roomId).update(updateData);
         });
 
         binding.rvComment.setLayoutManager(new LinearLayoutManager(this));
@@ -294,6 +337,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             binding.btnFav.setVisibility(View.GONE);
             binding.btnCheckout.setVisibility(View.VISIBLE);
+
         }
     }
 

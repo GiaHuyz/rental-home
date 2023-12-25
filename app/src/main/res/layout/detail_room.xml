@@ -88,7 +88,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/btnEdit"
+                    android:id="@+id/btnRemoveTenant"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -131,12 +131,25 @@
                     android:background="@drawable/rounded_button"
                     android:text="Remove"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btnEdit"
+                    app:layout_constraintStart_toEndOf="@+id/btnRemoveTenant"
                     app:layout_constraintTop_toTopOf="parent"
                     android:visibility="gone"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tvInforTenant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tenant: "
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:visibility="gone"
+                />
 
             <TextView
                 android:id="@+id/tvPrice"
@@ -299,7 +312,7 @@
                     android:text="Xem lịch hẹn"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button8"
+                    app:layout_constraintEnd_toStartOf="@+id/btnDeposit"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -308,7 +321,7 @@
 
                 <!-- Button cuối cùng (button8) -->
                 <Button
-                    android:id="@+id/button8"
+                    android:id="@+id/btnDeposit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -331,7 +344,7 @@
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/button8"/>
+                    app:layout_constraintStart_toEndOf="@id/btnDeposit"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

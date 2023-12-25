@@ -49,7 +49,6 @@ public class StripeService {
         this.SecretKey = "sk_test_51OIlIMJheuL6RU4wLP31nN1gfzP6lZAW4cjzwN4eW3YGu8eEcrIX6C1Y8cXnOZWl86zgzpSNR8tCWeswzrJTMeOO00hhNeiG1m";
         this.requestQueue = Volley.newRequestQueue(context);
         this.amount = String.valueOf(amount);
-        Log.d("amout", this.amount);
 
         PaymentConfiguration.init(context, PulishableKey);
         paymentSheet = new PaymentSheet((ComponentActivity) context, paymentSheetResult -> {
@@ -80,7 +79,7 @@ public class StripeService {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -111,7 +110,7 @@ public class StripeService {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -156,7 +155,7 @@ public class StripeService {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(context, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

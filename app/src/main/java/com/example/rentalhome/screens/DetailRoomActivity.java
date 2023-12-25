@@ -207,6 +207,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         });
 
         StripeService stripeService = new StripeService(this, room.getPrice());
+        StripeService deposited = new StripeService(this, room.getPrice() - (room.getPrice() * 20 / 100));
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,6 +221,18 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                                             user.getName(), user.getPhone(), user.getEmail(), address)));
                             notificationPresenter.sendNotification(new Notification(userId,
                                     String.format("Bạn đã thanh toán tiền thuê nhà %s", address)));
+                        }
+                    });
+                } else if (room.getStatus().equals("deposited")) {
+                    deposited.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                        @Override
+                        public void onPaymentSuccess() {
+                            NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
+                            notificationPresenter.sendNotification(new Notification(ownerId,
+                                    String.format("%s, %s, %s đã thanh toán tiền thuê còn lại cho nhà %s",
+                                            user.getName(), user.getPhone(), user.getEmail(), address)));
+                            notificationPresenter.sendNotification(new Notification(userId,
+                                    String.format("Bạn đã thanh toán tiền thuê còn lại cho nhà %s", address)));
                         }
                     });
                 } else {

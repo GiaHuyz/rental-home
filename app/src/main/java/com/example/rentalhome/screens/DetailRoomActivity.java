@@ -72,15 +72,17 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             return;
         }
 
-        if(bundle.getBoolean("Manage")) {
+        Rooms room = (Rooms) bundle.getSerializable("Room");
+        user = (User) bundle.getSerializable("User");
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if(room.getOwnerId().equals(userId)) {
             binding.btnFav.setVisibility(View.GONE);
             binding.btnCall.setVisibility(View.GONE);
             binding.btnCheckout.setVisibility(View.GONE);
             binding.btnDeposit.setVisibility(View.GONE);
             binding.btnRemove.setVisibility(View.VISIBLE);
         }
-
-        Rooms room = (Rooms) bundle.getSerializable("Room");
 
         if(room.getContract() != null && !TextUtils.isEmpty(room.getCurrentTenant())) {
             isRented = true;
@@ -106,9 +108,6 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         int area = room.getArea();
         ArrayList<String> surround = room.getSurround();
         String ownerId = room.getOwnerId();
-
-        user = (User) bundle.getSerializable("User");
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         userPresenter.isFavorite(userId, roomId);
 

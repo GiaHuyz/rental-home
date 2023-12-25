@@ -61,7 +61,6 @@ public class ListRoomActivity extends AppCompatActivity implements RoomsContract
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Room", room);
                 bundle.putSerializable("User", user);
-                bundle.putBoolean("Manage", manage);
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 1);
             }

@@ -150,12 +150,38 @@ public class RoomsModel implements RoomsContract.Model{
                         fileRef.delete().addOnSuccessListener(aVoid -> {
                             if (imagesCount.decrementAndGet() == 0) {
                                 db.collection("rooms").document(roomId).delete()
-                                        .addOnSuccessListener(v -> listener.onDeleted("Room deleted successfully"))
+                                        .addOnSuccessListener(v -> deleteCommentsRelatedToRoom(roomId, listener))
                                         .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
                             }
                         }).addOnFailureListener(e ->  listener.onFailure("Failed to delete room images"));
                     }
                 })
                 .addOnFailureListener(e ->  listener.onFailure("Failed to delete room images"));
+    }
+
+    private void deleteCommentsRelatedToRoom(String roomId, OnRoomDeletedListener listener) {
+        db.collection("comments")
+                .whereEqualTo("roomId", roomId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                        snapshot.getReference().delete();
+                    }
+                    deleteSchedulesRelatedToRoom(roomId, listener);
+                })
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
+    }
+
+    private void deleteSchedulesRelatedToRoom(String roomId, OnRoomDeletedListener listener) {
+        db.collection("schedules")
+                .whereEqualTo("roomId", roomId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                        snapshot.getReference().delete();
+                    }
+                    listener.onDeleted("Room deleted successfully");
+                })
+                .addOnFailureListener(e -> listener.onFailure(e.getMessage()));
     }
 }

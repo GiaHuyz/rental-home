@@ -48,7 +48,7 @@ public class ContractActivity extends AppCompatActivity implements NotificationC
             roomId = b.getString("roomId");
             ownerId = b.getString("ownerId");
             userIdB = b.getString("userIdB");
-            stripeService = new StripeService(this, Long.parseLong(fee));
+            stripeService = new StripeService(this);
             notificationPresenter = new NotificationPresenter(this);
         } else {
             binding.btnSubmit.setVisibility(View.GONE);
@@ -70,7 +70,7 @@ public class ContractActivity extends AppCompatActivity implements NotificationC
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stripeService.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                stripeService.startTransactionProcess(Long.parseLong(fee), new StripeService.PaymentSheetResultListener() {
                     @Override
                     public void onPaymentSuccess() {
                         FirebaseFirestore db = FirebaseFirestore.getInstance();

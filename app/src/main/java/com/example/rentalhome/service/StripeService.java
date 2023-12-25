@@ -43,7 +43,7 @@ public class StripeService {
     private PaymentSheetResultListener paymentSheetResultListener;
 
 
-    public StripeService(Context context, long amount) {
+    public StripeService(Context context) {
         this.context = context;
         this.PulishableKey = "pk_test_51OIlIMJheuL6RU4wcP5xniZZBjfHMqS0YNxL4nVebQm4xKnMxXxPQOwSr46M6Lfkovfu5S5LsmKzulA0wHmQbTV200nPET5nVh";
         this.SecretKey = "sk_test_51OIlIMJheuL6RU4wLP31nN1gfzP6lZAW4cjzwN4eW3YGu8eEcrIX6C1Y8cXnOZWl86zgzpSNR8tCWeswzrJTMeOO00hhNeiG1m";
@@ -56,8 +56,9 @@ public class StripeService {
         });
     }
 
-    public void startTransactionProcess(PaymentSheetResultListener listener) {
+    public void startTransactionProcess(long amount, PaymentSheetResultListener listener) {
         this.paymentSheetResultListener = listener;
+        this.amount = String.valueOf(amount);
         createCustomer();
     }
 

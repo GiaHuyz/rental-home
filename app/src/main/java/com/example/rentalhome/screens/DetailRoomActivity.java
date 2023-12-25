@@ -206,13 +206,12 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             }
         });
 
-        StripeService stripeService = new StripeService(this, room.getPrice());
-        StripeService deposited = new StripeService(this, room.getPrice() - (room.getPrice() * 20 / 100));
+        StripeService stripeService = new StripeService(this);
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isRented) {
-                    stripeService.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                    stripeService.startTransactionProcess(room.getPrice(), new StripeService.PaymentSheetResultListener() {
                         @Override
                         public void onPaymentSuccess() {
                             NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
@@ -224,7 +223,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                         }
                     });
                 } else if (room.getStatus().equals("deposited")) {
-                    deposited.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                    stripeService.startTransactionProcess(room.getPrice(), new StripeService.PaymentSheetResultListener() {
                         @Override
                         public void onPaymentSuccess() {
                             NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
@@ -290,12 +289,11 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             }
         });
 
-        StripeService deposit = new StripeService(this,  room.getPrice() * 20 / 100);
         binding.btnDeposit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(room.getStatus().equals("empty")) {
-                    deposit.startTransactionProcess(new StripeService.PaymentSheetResultListener() {
+                    stripeService.startTransactionProcess(room.getPrice() * 20 / 100, new StripeService.PaymentSheetResultListener() {
                         @Override
                         public void onPaymentSuccess() {
                             db.collection("rooms").document(roomId).update("status", "deposited")

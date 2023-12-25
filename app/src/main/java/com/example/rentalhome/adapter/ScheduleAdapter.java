@@ -56,7 +56,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         holder.btnBook.setOnClickListener(v -> itemClickListener.onClick(schedule));
         holder.btnCancel.setOnClickListener(v -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("notifications").document(schedule.getScheduleId()).delete();
+            db.collection("schedules").document(schedule.getScheduleId()).delete();
         });
     }
 

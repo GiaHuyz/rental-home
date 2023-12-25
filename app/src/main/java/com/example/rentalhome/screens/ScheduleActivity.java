@@ -82,10 +82,15 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
         presenter = new SchedulePresenter(this);
 
         binding.btnScheduleAppointment.setOnClickListener(v -> {
-            String dayOfWeek = binding.spinnerDayOfWeek.getSelectedItem().toString();
             String timeFrom = binding.tvTimeFrom.getText().toString();
             String timeTo = binding.tvTimeTo.getText().toString();
 
+            if(timeFrom.equals("--:--") || timeTo.equals("--:--")) {
+                Toast.makeText(this, "Hãy chọn giờ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String dayOfWeek = binding.spinnerDayOfWeek.getSelectedItem().toString();
             Schedule schedule = new Schedule(roomId, address, dayOfWeek,timeFrom, timeTo);
 
             presenter.addSchedule(schedule);
@@ -101,7 +106,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleContr
                     Toast.makeText(ScheduleActivity.this, "Đã có người đặt", Toast.LENGTH_SHORT).show();
                 } else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("rooms").document(roomId).update("status", "booked");
+                    db.collection("schedules").document(schedule.getScheduleId()).update("status", "booked");
                     notificationPresenter = new NotificationPresenter(ScheduleActivity.this);
                     notificationPresenter.sendNotification(new Notification(ownerId,
                             String.format("%s đã đặt lịch hẹn %s, %s - %s cho trọ %s", userName,

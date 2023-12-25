@@ -56,7 +56,6 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
     private CommentPresenter commentPresenter;
     private UserPresenter userPresenter;
     private CommentsAdapter commentsAdapter;
-    private boolean isRented = false;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -84,8 +83,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             binding.btnRemove.setVisibility(View.VISIBLE);
         }
 
-        if(room.getContract() != null && !TextUtils.isEmpty(room.getCurrentTenant())) {
-            isRented = true;
+        if(!TextUtils.isEmpty(room.getCurrentTenant())) {
             binding.btnFav.setVisibility(View.GONE);
             binding.btnSchedule.setVisibility(View.GONE);
             binding.btnDeposit.setVisibility(View.GONE);
@@ -210,7 +208,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isRented) {
+                if(room.getStatus().equals("rented")) {
                     stripeService.startTransactionProcess(room.getPrice(), new StripeService.PaymentSheetResultListener() {
                         @Override
                         public void onPaymentSuccess() {
@@ -292,11 +290,14 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         binding.btnDeposit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(room.getStatus().equals("empty")) {
+                if(room.getStatus().equals("available")) {
                     stripeService.startTransactionProcess(room.getPrice() * 20 / 100, new StripeService.PaymentSheetResultListener() {
                         @Override
                         public void onPaymentSuccess() {
-                            db.collection("rooms").document(roomId).update("status", "deposited")
+                            Map<String, Object> updateData = new HashMap<>();
+                            updateData.put("status", "deposited");
+                            updateData.put("currentTenant", userId);
+                            db.collection("rooms").document(roomId).update(updateData)
                                     .addOnSuccessListener(unused -> {
                                         Toast.makeText(DetailRoomActivity.this, "Bạn đã đặt cọc thành công", Toast.LENGTH_SHORT).show();
                                         NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
@@ -317,7 +318,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
 
         binding.btnRemoveTenant.setOnClickListener(v -> {
             Map<String, Object> updateData = new HashMap<>();
-            updateData.put("status", "empty");
+            updateData.put("status", "available");
             updateData.put("currentTenant", FieldValue.delete());
             db.collection("rooms").document(roomId).update(updateData);
         });

@@ -388,7 +388,7 @@
                             android:id="@+id/cbCook"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="cooking stove"
+                            android:text="Cooking Stove"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

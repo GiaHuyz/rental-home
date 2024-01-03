@@ -38,6 +38,7 @@ public class StripeService {
 
     public interface PaymentSheetResultListener {
         void onPaymentSuccess();
+        void onPaymentCanceled();
     }
 
     private PaymentSheetResultListener paymentSheetResultListener;
@@ -196,7 +197,7 @@ public class StripeService {
                 paymentSheetResultListener.onPaymentSuccess();
             }
         } else if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
-            Toast.makeText(context, "Payment Canceled", Toast.LENGTH_LONG).show();
+            paymentSheetResultListener.onPaymentCanceled();
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             Toast.makeText(context, "Payment Failed", Toast.LENGTH_LONG).show();
         }

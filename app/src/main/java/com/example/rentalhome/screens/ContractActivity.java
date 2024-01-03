@@ -12,11 +12,14 @@ import com.example.rentalhome.R;
 import com.example.rentalhome.contract.NotificationContract;
 import com.example.rentalhome.databinding.ActivityContractBinding;
 import com.example.rentalhome.dto.Notification;
+import com.example.rentalhome.dto.Rooms;
 import com.example.rentalhome.presenter.NotificationPresenter;
 import com.example.rentalhome.service.StripeService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +28,9 @@ import java.util.Map;
 public class ContractActivity extends AppCompatActivity implements NotificationContract.View {
     private ActivityContractBinding binding;
     private String roomId, ownerId, userIdB;
-    StripeService stripeService;
-    NotificationPresenter notificationPresenter;
+    private StripeService stripeService;
+    private NotificationPresenter notificationPresenter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,33 +74,50 @@ public class ContractActivity extends AppCompatActivity implements NotificationC
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stripeService.startTransactionProcess(Long.parseLong(fee), new StripeService.PaymentSheetResultListener() {
-                    @Override
-                    public void onPaymentSuccess() {
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> contractData = new HashMap<>();
-                        contractData.put("nameA", nameA);
-                        contractData.put("phoneA", phoneA);
-                        contractData.put("emailA", emailA);
-                        contractData.put("fee", Long.parseLong(fee));
-                        contractData.put("nameB", nameB);
-                        contractData.put("phoneB", phoneB);
-                        contractData.put("emailB", emailB);
-
-                        Map<String, Object> updateData = new HashMap<>();
-                        updateData.put("contract", contractData);
-                        updateData.put("status", "rented");
-                        updateData.put("currentTenant", userIdB);
-
-                        db.collection("rooms").document(roomId).update(updateData)
+                db.collection("rooms").document(roomId).get().addOnSuccessListener(documentSnapshot -> {
+                    Rooms room = documentSnapshot.toObject(Rooms.class);
+                    if (room != null && room.getStatus().equals("available")) {
+                        db.collection("rooms").document(roomId).update("status", "paying")
                                 .addOnSuccessListener(unused -> {
-                                    notificationPresenter.sendNotification(new Notification(ownerId,
-                                            String.format("%s, %s, %s đã thanh toán và xác nhận thuê nhà %s", nameB, phoneB, emailB, address)));
-                                    notificationPresenter.sendNotification(new Notification(userIdB,
-                                            String.format("Bạn đã thanh toán và xác nhận thuê nhà %s", address)));
-                                    setResult(Activity.RESULT_OK);
-                                    finish();
+                                    stripeService.startTransactionProcess(Long.parseLong(fee), new StripeService.PaymentSheetResultListener() {
+                                        @Override
+                                        public void onPaymentSuccess() {
+                                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                            Map<String, Object> contractData = new HashMap<>();
+                                            contractData.put("nameA", nameA);
+                                            contractData.put("phoneA", phoneA);
+                                            contractData.put("emailA", emailA);
+                                            contractData.put("fee", Long.parseLong(fee));
+                                            contractData.put("nameB", nameB);
+                                            contractData.put("phoneB", phoneB);
+                                            contractData.put("emailB", emailB);
+
+                                            Map<String, Object> updateData = new HashMap<>();
+                                            updateData.put("contract", contractData);
+                                            updateData.put("status", "rented");
+                                            updateData.put("currentTenant", userIdB);
+
+                                            db.collection("rooms").document(roomId).update(updateData)
+                                                    .addOnSuccessListener(unused -> {
+                                                        notificationPresenter.sendNotification(new Notification(ownerId,
+                                                                String.format("%s, %s, %s đã thanh toán và xác nhận thuê nhà %s", nameB, phoneB, emailB, address)));
+                                                        notificationPresenter.sendNotification(new Notification(userIdB,
+                                                                String.format("Bạn đã thanh toán và xác nhận thuê nhà %s", address)));
+                                                        setResult(Activity.RESULT_OK);
+                                                        finish();
+                                                    });
+                                        }
+
+                                        @Override
+                                        public void onPaymentCanceled() {
+                                            Toast.makeText(ContractActivity.this, "Payment Canceled", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                                 });
+                    } else if (room != null && room.getStatus().equals("paying")) {
+                        Toast.makeText(ContractActivity.this, "Phòng đang trong quá trình thanh toán. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ContractActivity.this, "Phòng không khả dụng. Vui lòng load lại", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

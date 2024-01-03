@@ -38,8 +38,11 @@ import com.example.rentalhome.presenter.RoomsPresenter;
 import com.example.rentalhome.presenter.UserPresenter;
 import com.example.rentalhome.service.StripeService;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Transaction;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -219,6 +222,11 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                             notificationPresenter.sendNotification(new Notification(userId,
                                     String.format("Bạn đã thanh toán tiền thuê nhà %s", address)));
                         }
+
+                        @Override
+                        public void onPaymentCanceled() {
+                            Toast.makeText(DetailRoomActivity.this, "Payment Canceled", Toast.LENGTH_LONG).show();
+                        }
                     });
                 } else if (room.getStatus().equals("deposited")) {
                     stripeService.startTransactionProcess(room.getPrice(), new StripeService.PaymentSheetResultListener() {
@@ -231,12 +239,17 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
                             notificationPresenter.sendNotification(new Notification(userId,
                                     String.format("Bạn đã thanh toán tiền thuê còn lại cho nhà %s", address)));
                         }
+
+                        @Override
+                        public void onPaymentCanceled() {
+                            Toast.makeText(DetailRoomActivity.this, "Payment Canceled", Toast.LENGTH_LONG).show();
+                        }
                     });
                 } else {
                     Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
                     db = FirebaseFirestore.getInstance();
 
-                    db.collection("users").document(userId)
+                    db.collection("users").document(ownerId)
                             .get()
                             .addOnSuccessListener(documentSnapshot -> {
                                 if (documentSnapshot.exists()) {
@@ -265,7 +278,7 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailRoomActivity.this, ContractActivity.class);
-                db.collection("users").document(userId)
+                db.collection("users").document(ownerId)
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
                             if (documentSnapshot.exists()) {
@@ -290,29 +303,43 @@ public class DetailRoomActivity extends AppCompatActivity implements CommentCont
         binding.btnDeposit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(room.getStatus().equals("available")) {
-                    stripeService.startTransactionProcess(room.getPrice() * 20 / 100, new StripeService.PaymentSheetResultListener() {
-                        @Override
-                        public void onPaymentSuccess() {
-                            Map<String, Object> updateData = new HashMap<>();
-                            updateData.put("status", "deposited");
-                            updateData.put("currentTenant", userId);
-                            db.collection("rooms").document(roomId).update(updateData)
-                                    .addOnSuccessListener(unused -> {
-                                        Toast.makeText(DetailRoomActivity.this, "Bạn đã đặt cọc thành công", Toast.LENGTH_SHORT).show();
-                                        NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
-                                        notificationPresenter.sendNotification(new Notification(userId,
-                                                String.format("Bạn đã đặt cọc thành công nhà %s", address)));
-                                        notificationPresenter.sendNotification(new Notification(ownerId,
-                                                String.format("%s, %s, %s đã đặt cọc nhà %s",
-                                                        user.getName(), user.getPhone(), user.getEmail(), address)));
-                                    })
+                db.collection("rooms").document(roomId).get().addOnSuccessListener(documentSnapshot -> {
+                    Rooms room = documentSnapshot.toObject(Rooms.class);
+                    if (room != null && room.getStatus().equals("available")) {
+                        db.collection("rooms").document(roomId).update("status", "depositing")
+                                .addOnSuccessListener(unused -> {
+                                    stripeService.startTransactionProcess(room.getPrice() * 20 / 100, new StripeService.PaymentSheetResultListener() {
+                                        @Override
+                                        public void onPaymentSuccess() {
+                                            Map<String, Object> updateData = new HashMap<>();
+                                            updateData.put("status", "deposited");
+                                            updateData.put("currentTenant", userId);
+                                            db.collection("rooms").document(roomId).update(updateData)
+                                                    .addOnSuccessListener(unused -> {
+                                                        Toast.makeText(DetailRoomActivity.this, "Bạn đã đặt cọc thành công", Toast.LENGTH_SHORT).show();
+                                                        NotificationPresenter notificationPresenter = new NotificationPresenter(DetailRoomActivity.this);
+                                                        notificationPresenter.sendNotification(new Notification(userId,
+                                                                String.format("Bạn đã đặt cọc thành công nhà %s", address)));
+                                                        notificationPresenter.sendNotification(new Notification(ownerId,
+                                                                String.format("%s, %s, %s đã đặt cọc nhà %s",
+                                                                        user.getName(), user.getPhone(), user.getEmail(), address)));
+                                                    })
+                                                    .addOnFailureListener(e -> Toast.makeText(DetailRoomActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                                        }
 
-                                    .addOnFailureListener(e ->
-                                            Toast.makeText(DetailRoomActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-                        }
-                    });
-                }
+                                        @Override
+                                        public void onPaymentCanceled() {
+                                            db.collection("rooms").document(roomId).update("status", "available");
+                                            Toast.makeText(DetailRoomActivity.this, "Payment Canceled", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                });
+                    } else if (room != null && room.getStatus().equals("depositing")) {
+                        Toast.makeText(DetailRoomActivity.this, "Phòng đang trong quá trình đặt cọc. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(DetailRoomActivity.this, "Phòng không khả dụng. Vui lòng load lại", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

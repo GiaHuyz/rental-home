@@ -119,6 +119,7 @@
                     android:background="@drawable/rounded_button"
                     android:text="Contract"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnCall"
                     app:layout_constraintTop_toTopOf="parent"
